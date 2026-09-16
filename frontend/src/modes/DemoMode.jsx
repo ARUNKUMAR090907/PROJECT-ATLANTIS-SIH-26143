@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
+import { getCaseReportPdfUrl } from "../services/api.js";
 import { MapContainer, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import {
@@ -160,7 +161,7 @@ export default function DemoMode() {
               setIsGeneratingReport(true);
               setReportMsg("Generating forensic dossier...");
               try {
-                const url = `/api/cases/${currentCase.case_id}/report/pdf`;
+               const url = getCaseReportPdfUrl(currentCase.case_id);
                 const res = await fetch(url);
                 if (!res.ok) throw new Error("Report generation failed");
                 const blob = await res.blob();

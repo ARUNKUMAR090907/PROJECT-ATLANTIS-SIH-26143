@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+).replace(/\/$/, "");
+
 const client = axios.create({
-  baseURL: "/api",
+  baseURL: `${API_BASE_URL}/api`,
   timeout: 60000,
 });
 
@@ -177,7 +181,7 @@ export async function generateReport(investigation) {
 }
 
 export function reportDownloadUrl(filename) {
-  return `/api/report/download/${filename}`;
+  return `${API_BASE_URL}/api/report/download/${filename}`;
 }
 
 export async function listHistoricalCases() {
@@ -228,7 +232,7 @@ export async function generateCaseReport(caseId) {
 }
 
 export function getCaseReportPdfUrl(caseId) {
-  return `/api/cases/${caseId}/report/pdf`;
+  return `${API_BASE_URL}/api/cases/${caseId}/report/pdf`;
 }
 
 export async function getLiveState() {
