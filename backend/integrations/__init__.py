@@ -1,1 +1,1 @@
-"""INFINOVAExternal Integration Adapters."""
+"""ATLANTISExternal Integration Adapters."""

@@ -133,7 +133,7 @@ def run_investigation(incident_path: str | None = None) -> dict:
             "requires_human_validation": True,
             "not_legal_enforcement": True,
             "human_in_the_loop": (
-                "INFINOVA provides decision support and prioritizes investigation candidates. "
+                "ATLANTIS provides decision support and prioritizes investigation candidates. "
                 "Final attribution requires human review and corroborating evidence."
             ),
             "privacy": (
@@ -148,7 +148,7 @@ def run_investigation(incident_path: str | None = None) -> dict:
                 "Sparse or synthetic oceanographic forcing.",
             ],
             "statements": [
-                "INFINOVA provides decision support and prioritizes investigation candidates. Final attribution requires human review and corroborating evidence.",
+                "ATLANTIS provides decision support and prioritizes investigation candidates. Final attribution requires human review and corroborating evidence.",
                 "Detection, origin estimation, forecast, and vessel ranking are separate steps — correlation is not attribution.",
                 "Satellite detection can contain false positives (look-alikes).",
                 "AIS may contain gaps, delays, or spoofed/missing signals.",

@@ -1,4 +1,4 @@
-"""Test Standardized Data Adapters for INFINOVA."""
+"""Test Standardized Data Adapters for ATLANTIS."""
 import pytest
 from backend.adapters import (
     AISDataAdapter,

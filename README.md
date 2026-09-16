@@ -1,8 +1,8 @@
-# 🌊 INFINOVA
+# 🌊 ATLANTIS
 
 > **Operational Satellite Oil Spill Detection, Hydrodynamic Drift Simulation & Vessel Attribution Platform**  
 > *Developed for Smart India Hackathon 2026 (SIH 2026) | Problem Statement ID: 26143*  
-> **Team:** INFINOVA  
+> **Team:** ATLANTIS  
 
 ---
 
@@ -42,7 +42,7 @@ flowchart TD
 
 ## 🌐 4 Multi-Source Data Providers
 
-INFINOVA features a zero-configuration **HYBRID / LIVE data pipeline** that queries genuine open scientific satellite and meteorological feeds:
+ATLANTIS features a zero-configuration **HYBRID / LIVE data pipeline** that queries genuine open scientific satellite and meteorological feeds:
 
 | Provider | Data Feed | Query API | Data Mode & Provenance |
 | :--- | :--- | :--- | :--- |
@@ -153,9 +153,9 @@ pytest -v
 
 > [!IMPORTANT]
 > **Decision Support Notice:**  
-> Vessel attribution scores, rankings, and trajectory corridors produced by INFINOVA represent **probabilistic analytical decision-support** designed to assist authorized maritime coast guard inspectors. They do **not** constitute proof of guilt or definitive legal liability. Data provenance badges (`LIVE`, `HYBRID`, `DEMO`) are transparently displayed across all outputs and generated PDF dossiers.
+> Vessel attribution scores, rankings, and trajectory corridors produced by ATLANTIS represent **probabilistic analytical decision-support** designed to assist authorized maritime coast guard inspectors. They do **not** constitute proof of guilt or definitive legal liability. Data provenance badges (`LIVE`, `HYBRID`, `DEMO`) are transparently displayed across all outputs and generated PDF dossiers.
 
 ---
 
-*Team INFINOVA — Smart India Hackathon 2026*
-# Infinova
+*Team ATLANTIS — Smart India Hackathon 2026*
+# ATLANTIS

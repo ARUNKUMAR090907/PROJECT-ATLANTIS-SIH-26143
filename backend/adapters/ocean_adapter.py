@@ -1,4 +1,4 @@
-"""Standardized Ocean Current Data Adapter for INFINOVA.
+"""Standardized Ocean Current Data Adapter for ATLANTIS.
 Queries CMEMS / Open-Meteo Marine surface hydrodynamic current vectors with verified historical fallback.
 """
 from __future__ import annotations

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Reproducible Training & Evaluation Pipeline for INFINOVA Oil Spill Segmentation.
+Reproducible Training & Evaluation Pipeline for ATLANTIS Oil Spill Segmentation.
 Dataset Analysis -> Preprocessing -> Augmentation -> U-Net Training -> Metrics -> Model Checkpoint Export.
 """
 from __future__ import annotations

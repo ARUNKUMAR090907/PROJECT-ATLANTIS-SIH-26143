@@ -30,7 +30,7 @@ export default function AppShell({ children }) {
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-base tracking-wider text-white">INFINOVA</span>
+              <span className="font-extrabold text-base tracking-wider text-white">ATLANTIS</span>
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#0284c7]/20 text-[#38bdf8] border border-[#0284c7]/30 tracking-widest uppercase">GEO-SAR</span>
             </div>
             <p className="text-[10px] text-slate-400 font-mono tracking-tight -mt-0.5 hidden lg:block">Satellite Oil Spill Detection | AIS Attribution | Drift Modelling</p>

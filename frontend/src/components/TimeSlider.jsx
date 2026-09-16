@@ -1,6 +1,6 @@
 /**
  * TimeSlider.jsx - Interactive Temporal Drift & AIS Trajectory Slider
- * INFINOVA - SIH 2026 Demonstration
+ * ATLANTIS - SIH 2026 Demonstration
  * Allows stepping from T-6h (hindcast origin) to T+6h (forecast projection)
  */
 import { Clock, FastForward, Pause, Play, RotateCcw, SkipBack, SkipForward } from "lucide-react";

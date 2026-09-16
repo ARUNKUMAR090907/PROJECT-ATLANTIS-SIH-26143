@@ -1,6 +1,6 @@
 /**
  * DataIntegrityPanel.jsx - Data Provenance & Integrity Display
- * INFINOVA - SIH 2026 Demonstration
+ * ATLANTIS - SIH 2026 Demonstration
  * Clearly labels every data source as LIVE / NEAR-REAL-TIME / HISTORICAL / SIMULATED / UNAVAILABLE
  */
 import { Activity, AlertTriangle, CheckCircle2, Clock, Database, Globe, Radio, Satellite, Shield, Waves, Wind, XCircle, Zap } from "lucide-react";

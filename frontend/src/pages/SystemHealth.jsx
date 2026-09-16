@@ -318,7 +318,7 @@ export default function SystemHealth({ onBack }) {
             <li>Configure <code className="text-sea-300">CDSE_USERNAME</code> and <code className="text-sea-300">CDSE_PASSWORD</code> for live Sentinel-1 STAC queries.</li>
             <li>Configure <code className="text-sea-300">VESSELFINDER_API_KEY</code> for real-time commercial ship positions.</li>
             <li>Configure <code className="text-sea-300">COPERNICUS_MARINE_USERNAME</code> and <code className="text-sea-300">CDS_API_KEY</code> for live ocean current and ERA5 wind assimilation.</li>
-            <li>In the absence of live network or credentials, INFINOVA automatically engages verified historical demo providers without disruption.</li>
+            <li>In the absence of live network or credentials, ATLANTIS automatically engages verified historical demo providers without disruption.</li>
           </ul>
         </div>
       </div>

@@ -39,7 +39,7 @@ def generate_pdf(result: dict[str, Any], incident_id: str) -> Path:
     )
 
     story = [
-        Paragraph("INFINOVA — Investigation Report", title),
+        Paragraph("ATLANTIS — Investigation Report", title),
         Paragraph("SYNTHETIC DEMONSTRATION DATA — not real-world observations.", small),
         Spacer(1, 4 * mm),
         Paragraph("1. Incident information", h),
@@ -146,12 +146,12 @@ def generate_pdf(result: dict[str, Any], incident_id: str) -> Path:
             Spacer(1, 6 * mm),
             Paragraph(
                 f"Generated {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} · "
-                "INFINOVA prototype (SIH 2026 PS 26143).",
+                "ATLANTIS prototype (SIH 2026 PS 26143).",
                 small,
             ),
         ]
     )
 
-    doc = SimpleDocTemplate(str(path), pagesize=A4, title="INFINOVA Investigation Report")
+    doc = SimpleDocTemplate(str(path), pagesize=A4, title="ATLANTIS Investigation Report")
     doc.build(story)
     return path

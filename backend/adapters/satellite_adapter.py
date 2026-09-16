@@ -1,4 +1,4 @@
-"""Standardized Satellite Data Adapter for INFINOVA.
+"""Standardized Satellite Data Adapter for ATLANTIS.
 Queries Copernicus Data Space Ecosystem (CDSE) Sentinel-1 SAR products with verified historical fallback.
 """
 from __future__ import annotations

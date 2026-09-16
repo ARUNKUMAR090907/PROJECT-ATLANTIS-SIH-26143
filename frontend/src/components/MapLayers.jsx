@@ -1,5 +1,5 @@
 /**
- * MapLayers.jsx — INFINOVA Maritime Map Layers
+ * MapLayers.jsx — ATLANTIS Maritime Map Layers
  * Time-aware layers: OilSlickLayer, ForecastSlickLayer, AISVesselsLayer,
  * DriftOverlaysLayer, BasemapLayer, RadarOverlayLayer.
  * All layers accept selectedTime / detectionTime props for the Time Machine.

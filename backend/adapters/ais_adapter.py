@@ -1,4 +1,4 @@
-"""Standardized AIS Data Adapter for INFINOVA.
+"""Standardized AIS Data Adapter for ATLANTIS.
 Combines VesselFinder API + INCOIS Ocean Observation Network (OON) + Verified AIS Archive.
 """
 from __future__ import annotations
@@ -100,7 +100,7 @@ class AISDataAdapter:
         return {
             "data": all_records,
             "metadata": {
-                "source": source_name if not fallback_used else "INFINOVAVerified AIS Archive + INCOIS OON",
+                "source": source_name if not fallback_used else "ATLANTISVerified AIS Archive + INCOIS OON",
                 "source_type": source_type,
                 "timestamp": datetime.now(timezone.utc).isoformat(),
                 "latency_seconds": latency,
@@ -122,23 +122,23 @@ class AISDataAdapter:
             return {
                 "data": None,
                 "metadata": {
-                    "source": "INFINOVAS Registry",
+                    "source": "ATLANTISS Registry",
                     "source_type": "UNAVAILABLE",
                     "timestamp": datetime.now(timezone.utc).isoformat(),
                     "latency_seconds": latency,
                     "fallback_used": False,
-                    "attribution": "INFINOVAS Engine",
+                    "attribution": "ATLANTISS Engine",
                 },
             }
 
         return {
             "data": v,
             "metadata": {
-                "source": "INFINOVAVerified AIS Archive",
+                "source": "ATLANTISVerified AIS Archive",
                 "source_type": "HISTORICAL",
                 "timestamp": datetime.now(timezone.utc).isoformat(),
                 "latency_seconds": latency,
                 "fallback_used": True,
-                "attribution": "VesselFinder / INFINOVAS Archive",
+                "attribution": "VesselFinder / ATLANTISS Archive",
             },
         }

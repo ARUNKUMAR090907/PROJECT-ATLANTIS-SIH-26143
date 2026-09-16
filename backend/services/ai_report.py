@@ -28,7 +28,7 @@ def build_structured_investigation_report(investigation: Dict[str, Any]) -> Dict
             "section_number": 1,
             "title": "Executive Summary",
             "content": (
-                f"On {incident.get('observation_time', 'N/A')}, INFINOVA detected a potential marine hydrocarbon slick "
+                f"On {incident.get('observation_time', 'N/A')}, ATLANTIS detected a potential marine hydrocarbon slick "
                 f"measuring approximately {char.get('area_km2', 'N/A')} km² in the {incident.get('location_name', 'coastal area')} "
                 f"with a detection confidence of {round(float(det.get('confidence', 0.0)) * 100, 1)}%. "
                 f"Hydrodynamic hindcast modeling traces the probable origin region to coordinates ({origin.get('latitude', 'N/A')}°N, {origin.get('longitude', 'N/A')}°E) "
@@ -196,7 +196,7 @@ def build_structured_investigation_report(investigation: Dict[str, Any]) -> Dict
             "section_number": 16,
             "title": "Disclaimer",
             "content": (
-                "INFINOVA provides intelligence and decision support for maritime law enforcement and environmental agencies. "
+                "ATLANTIS provides intelligence and decision support for maritime law enforcement and environmental agencies. "
                 "Attribution scores are analytical likelihood estimates, not legal proof of causation or liability. "
                 "Final enforcement action requires physical inspection, forensic chemical finger-printing, and human verification."
             ),

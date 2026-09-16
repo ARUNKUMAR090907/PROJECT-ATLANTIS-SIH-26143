@@ -1,4 +1,4 @@
-"""Standardized Data Adapters for INFINOVA."""
+"""Standardized Data Adapters for ATLANTIS."""
 from backend.adapters.ais_adapter import AISDataAdapter
 from backend.adapters.ocean_adapter import OceanCurrentAdapter
 from backend.adapters.satellite_adapter import SentinelSatelliteAdapter

@@ -1,4 +1,4 @@
-"""Tests for INFINOVA Live Mode, INCOIS, and Provider Telemetry."""
+"""Tests for ATLANTIS Live Mode, INCOIS, and Provider Telemetry."""
 from fastapi.testclient import TestClient
 from backend.main import app
 from backend.providers.registry import registry

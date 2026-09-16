@@ -1,6 +1,6 @@
 /**
  * InvestigationStory.jsx - 10-Step Investigation Story Mode
- * INFINOVA - SIH 2026 Demonstration
+ * ATLANTIS - SIH 2026 Demonstration
  */
 import { useEffect, useRef, useState } from "react";
 import {
@@ -159,7 +159,7 @@ const STORY_STEPS = [
     id: 9, code: "INTERCEPT",
     title: "Maritime Response & Intercept Advisory", shortTitle: "Intercept",
     icon: Compass, color: "#fbbf24", badge: "ADVISORY", badgeColor: "#f97316",
-    description: "Based on the forecast trajectory and Coast Guard resource positions, INFINOVA calculates optimal intercept corridors and recommended patrol zones, integrating vessel-type requirements and equipment inventories.",
+    description: "Based on the forecast trajectory and Coast Guard resource positions, ATLANTIS calculates optimal intercept corridors and recommended patrol zones, integrating vessel-type requirements and equipment inventories.",
     detail: [
       "Priority Zone: 19.0-18.8 N / 72.0-72.3 E",
       "Recommended Response: ICG OPV + skimmer vessel",
@@ -190,7 +190,7 @@ const STORY_STEPS = [
       "Section 16: Data Source Citations",
     ],
     mapHint: "report", dataLabel: "GENERATED",
-    dataSource: "INFINOVA Report Engine",
+    dataSource: "ATLANTIS Report Engine",
   },
 ];
 

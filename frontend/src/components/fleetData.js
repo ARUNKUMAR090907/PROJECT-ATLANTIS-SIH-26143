@@ -3,7 +3,7 @@
  * Covers 24 vessels across the Arabian Sea / Mumbai High / Gujarat Maritime Corridor.
  * Each vessel contains 26 precision waypoints spanning T-12h (2026-03-13T18:30Z) to T+24h (2026-03-15T06:30Z).
  * Rigorously validated: 100% of coordinates are in open ocean waters, shipping fairways, or deep anchorage channels.
- * Generated for INFINOVA SIH 2026 Demonstration.
+ * Generated for ATLANTIS SIH 2026 Demonstration.
  */
 
 export const REGIONAL_AIS_FLEET = [

@@ -47,7 +47,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="INFINOVA",
+    title="ATLANTIS",
     description="Satellite Oil Spill Detection, Drift Prediction & AIS Attribution Platform",
     version="1.0.0",
     lifespan=lifespan,

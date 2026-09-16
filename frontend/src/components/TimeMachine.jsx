@@ -1,6 +1,6 @@
 /**
  * TimeMachine.jsx — Maritime Investigation Time Machine
- * INFINOVA — SIH 2026 Demonstration
+ * ATLANTIS — SIH 2026 Demonstration
  *
  * Features:
  *  • Free-form datetime input (date + time pickers)

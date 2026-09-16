@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-INFINOVA - Live Open Data Ingestion Pipeline
+ATLANTIS - Live Open Data Ingestion Pipeline
 Queries official open APIs: Copernicus CDSE, Open-Meteo Marine, Open-Meteo ECMWF.
 """
 from __future__ import annotations
@@ -18,7 +18,7 @@ from backend.services.data_fetcher import fetch_all_live_data
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Fetch live data across all 4 INFINOVAproviders.")
+    parser = argparse.ArgumentParser(description="Fetch live data across all 4 ATLANTISproviders.")
     parser.add_argument("--source", choices=["all", "cdse", "marine", "weather", "vesselfinder"], default="all")
     parser.add_argument("--aoi", nargs=4, type=float, default=[71.50, 18.80, 72.20, 19.45],
                         help="AOI bbox: min_lon min_lat max_lon max_lat")
@@ -31,7 +31,7 @@ def main():
     )
     args = parser.parse_args()
     bbox = tuple(args.aoi)
-    print("      INFINOVA - Multi-Provider Live Data Acquisition Pipeline          ")
+    print("      ATLANTIS - Multi-Provider Live Data Acquisition Pipeline          ")
     print("================================================================================")
     print(f"Target Bounding Box: {bbox} (Arabian Sea / Mumbai Offshore)")
     print("Querying 4 Scientific Providers...")

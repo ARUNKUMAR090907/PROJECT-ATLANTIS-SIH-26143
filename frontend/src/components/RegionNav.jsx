@@ -1,6 +1,6 @@
 /**
  * RegionNav.jsx - Regional GIS Quick-Navigation Buttons
- * INFINOVA - Clean modern glassmorphic quick-jump buttons for Indian Ocean & Arabian Sea zones
+ * ATLANTIS - Clean modern glassmorphic quick-jump buttons for Indian Ocean & Arabian Sea zones
  */
 import { Anchor, Compass, MapPin, Navigation } from "lucide-react";
 

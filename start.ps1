@@ -1,5 +1,5 @@
 # ============================================================
-#  INFINOVA — One-Click Launcher (PowerShell)
+#  ATLANTIS — One-Click Launcher (PowerShell)
 #  Smart India Hackathon 2026 · PS-26143
 # ============================================================
 

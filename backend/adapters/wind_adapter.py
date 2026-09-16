@@ -1,4 +1,4 @@
-"""Standardized Wind Data Adapter for INFINOVA.
+"""Standardized Wind Data Adapter for ATLANTIS.
 Queries ECMWF / Open-Meteo 10m Atmospheric Wind with verified historical fallback.
 """
 from __future__ import annotations

@@ -1,6 +1,6 @@
 /**
  * MLValidationCard.jsx - ML Model Performance & Validation Benchmark
- * INFINOVA - SIH 2026 Demonstration
+ * ATLANTIS - SIH 2026 Demonstration
  */
 import { Award, Brain, CheckCircle2, ChevronDown, ChevronUp, Cpu, Database, Eye, Info, Sparkles, Target, Zap } from "lucide-react";
 import { useState } from "react";

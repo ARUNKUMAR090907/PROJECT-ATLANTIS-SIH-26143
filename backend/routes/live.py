@@ -1,4 +1,4 @@
-"""Normalized Live Coordinator & Monitoring Router for INFINOVAAI.
+"""Normalized Live Coordinator & Monitoring Router for ATLANTISAI.
 
 Follows strict scientific data contracts for:
 - CDSE Sentinel-1 SAR
@@ -25,7 +25,7 @@ _EVENT_LOG: List[Dict[str, Any]] = [
         "id": "evt-init-01",
         "timestamp": datetime.now(timezone.utc).strftime("%H:%M:%S UTC"),
         "source": "SYSTEM",
-        "message": "INFINOVAlive observation pipeline initialized",
+        "message": "ATLANTISlive observation pipeline initialized",
         "level": "INFO",
     },
     {
