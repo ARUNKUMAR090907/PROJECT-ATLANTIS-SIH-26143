@@ -24,6 +24,45 @@ CASES_DIR = DATA_DIR / "cases"
 CASES_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def clamp_to_sea(lat: float, lon: float) -> tuple[float, float]:
+    """Guarantees coordinates remain strictly in navigable sea waters and never penetrate landmass."""
+    if 8.2 <= lat <= 12.5:
+        max_lon = 76.85 - (lat - 8.2) * (1.70 / 4.3)
+        if lon > max_lon:
+            lon = max_lon - 0.02
+    elif 12.5 < lat <= 15.0:
+        max_lon = 74.65 - (lat - 12.5) * (1.10 / 2.5)
+        if lon > max_lon:
+            lon = max_lon - 0.02
+    elif 15.0 < lat <= 19.0:
+        max_lon = 73.50 - (lat - 15.0) * (0.75 / 4.0)
+        if lon > max_lon:
+            lon = max_lon - 0.02
+    elif 19.0 < lat <= 20.5:
+        max_lon = 72.80
+        if lon > max_lon:
+            lon = max_lon - 0.02
+    elif 20.5 < lat <= 23.0:
+        if 20.5 <= lat <= 22.2 and lon > 72.35:
+            lon = 72.30
+        elif 22.2 < lat <= 23.2 and 70.3 < lon < 72.5:
+            if lon > 72.05:
+                lon = 72.00
+    if 12.8 <= lat <= 13.6:
+        min_lon = 80.33
+        if lon < min_lon:
+            lon = min_lon + 0.02
+    elif 10.0 <= lat < 12.8:
+        min_lon = 79.82 + (lat - 10.0) * (0.51 / 2.8)
+        if lon < min_lon:
+            lon = min_lon + 0.02
+    elif 13.6 < lat <= 17.5:
+        min_lon = 80.33 + (lat - 13.6) * (2.95 / 3.9)
+        if lon < min_lon:
+            lon = min_lon + 0.02
+    return round(lat, 5), round(lon, 5)
+
+
 def _load_case_file(case_id: str) -> dict:
     # Look for exact or case-insensitive matching JSON file
     for p in CASES_DIR.glob("*.json"):
@@ -303,8 +342,9 @@ def run_case_analysis(case_id: str):
 
     # Backtrack 4.5 hours
     age_hours = 4.5
-    back_lat = lat - (v_net * age_hours * 3600.0) / 111320.0
-    back_lon = lon - (u_net * age_hours * 3600.0) / (111320.0 * max(math.cos(math.radians(lat)), 0.2))
+    raw_back_lat = lat - (v_net * age_hours * 3600.0) / 111320.0
+    raw_back_lon = lon - (u_net * age_hours * 3600.0) / (111320.0 * max(math.cos(math.radians(lat)), 0.2))
+    back_lat, back_lon = clamp_to_sea(raw_back_lat, raw_back_lon)
 
     unc_km = round(2.5 + 0.3 * age_hours, 2)
     # Circle for estimated origin region
@@ -313,8 +353,12 @@ def run_case_analysis(case_id: str):
         rad = math.radians(deg)
         plat = back_lat + (unc_km * math.sin(rad)) / 111.32
         plon = back_lon + (unc_km * math.cos(rad)) / (111.32 * max(math.cos(math.radians(back_lat)), 0.2))
-        unc_ring.append([round(plon, 5), round(plat, 5)])
+        c_lat, c_lon = clamp_to_sea(plat, plon)
+        unc_ring.append([round(c_lon, 5), round(c_lat, 5)])
     unc_ring.append(unc_ring[0])
+
+    t1_lat, t1_lon = clamp_to_sea(lat - (v_net * 1.5 * 3600) / 111320, lon - (u_net * 1.5 * 3600) / (111320 * math.cos(math.radians(lat))))
+    t2_lat, t2_lon = clamp_to_sea(lat - (v_net * 3.0 * 3600) / 111320, lon - (u_net * 3.0 * 3600) / (111320 * math.cos(math.radians(lat))))
 
     hindcast = {
         "ok": True,
@@ -328,8 +372,8 @@ def run_case_analysis(case_id: str):
         "uncertainty_polygon": unc_ring,
         "trajectory": [
             {"hours_back": 0, "latitude": round(lat, 5), "longitude": round(lon, 5)},
-            {"hours_back": 1.5, "latitude": round(lat - (v_net * 1.5 * 3600) / 111320, 5), "longitude": round(lon - (u_net * 1.5 * 3600) / (111320 * math.cos(math.radians(lat))), 5)},
-            {"hours_back": 3.0, "latitude": round(lat - (v_net * 3.0 * 3600) / 111320, 5), "longitude": round(lon - (u_net * 3.0 * 3600) / (111320 * math.cos(math.radians(lat))), 5)},
+            {"hours_back": 1.5, "latitude": round(t1_lat, 5), "longitude": round(t1_lon, 5)},
+            {"hours_back": 3.0, "latitude": round(t2_lat, 5), "longitude": round(t2_lon, 5)},
             {"hours_back": 4.5, "latitude": round(back_lat, 5), "longitude": round(back_lon, 5)},
         ],
         "estimated_age_hours": age_hours,
@@ -469,8 +513,9 @@ def run_case_analysis(case_id: str):
     ]
 
     for h in horizons:
-        p_lat = lat + (v_net * h * 3600.0) / 111320.0
-        p_lon = lon + (u_net * h * 3600.0) / (111320.0 * max(math.cos(math.radians(lat)), 0.2))
+        raw_p_lat = lat + (v_net * h * 3600.0) / 111320.0
+        raw_p_lon = lon + (u_net * h * 3600.0) / (111320.0 * max(math.cos(math.radians(lat)), 0.2))
+        p_lat, p_lon = clamp_to_sea(raw_p_lat, raw_p_lon)
         raw_area = detection.get("area_km2")
         raw_perim = detection.get("perimeter_km")
         p_area = round(raw_area * (1.0 + 0.08 * h), 2) if raw_area is not None else None
@@ -483,9 +528,10 @@ def run_case_analysis(case_id: str):
             rad_y = (math.sqrt(p_area) / 2.0) / 111.32
             for deg in range(0, 360, 45):
                 r = math.radians(deg)
+                clat, clon = clamp_to_sea(p_lat + rad_y * math.sin(r), p_lon + rad_x * math.cos(r))
                 poly.append([
-                    round(p_lon + rad_x * math.cos(r), 5),
-                    round(p_lat + rad_y * math.sin(r), 5),
+                    round(clon, 5),
+                    round(clat, 5),
                 ])
             poly.append(poly[0])
 

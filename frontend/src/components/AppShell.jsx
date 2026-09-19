@@ -71,16 +71,16 @@ export default function AppShell({ children }) {
                 <span>Map</span>
               </button>
               <button
-                onClick={() => navigateTo("dashboard")}
+                onClick={() => navigateTo("copilot")}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                  currentPage === "dashboard"
+                  currentPage === "copilot"
                     ? "bg-purple-600/30 text-purple-300 border border-purple-500/40"
                     : "text-slate-400 hover:text-white hover:bg-[#101f3b]"
                 }`}
-                title="Case Investigation Dashboard"
+                title="Investigation Copilot & Evidence Fusion"
               >
-                <LayoutDashboard size={12} />
-                <span>Dashboard</span>
+                <Shield size={12} className="text-sky-400" />
+                <span>Copilot</span>
               </button>
             </div>
           )}

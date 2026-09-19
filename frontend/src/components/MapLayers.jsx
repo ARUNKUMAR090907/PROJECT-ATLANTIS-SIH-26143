@@ -18,6 +18,47 @@ import {
 } from "react-leaflet";
 
 // ════════════════════════════════════════════════════════════════════════════
+// COASTAL CLAMPING — Guarantees slicks & vessels travel strictly in sea waters
+// ════════════════════════════════════════════════════════════════════════════
+export function clampToSea(lat, lon) {
+  if (lat == null || lon == null || isNaN(lat) || isNaN(lon)) return [lat, lon];
+  let cLat = Number(lat);
+  let cLon = Number(lon);
+
+  // West Coast India (Arabian Sea)
+  if (cLat >= 8.2 && cLat <= 12.5) {
+    const maxLon = 76.85 - (cLat - 8.2) * (1.70 / 4.3);
+    if (cLon > maxLon) cLon = maxLon - 0.02;
+  } else if (cLat > 12.5 && cLat <= 15.0) {
+    const maxLon = 74.65 - (cLat - 12.5) * (1.10 / 2.5);
+    if (cLon > maxLon) cLon = maxLon - 0.02;
+  } else if (cLat > 15.0 && cLat <= 19.0) {
+    const maxLon = 73.50 - (cLat - 15.0) * (0.75 / 4.0);
+    if (cLon > maxLon) cLon = maxLon - 0.02;
+  } else if (cLat > 19.0 && cLat <= 20.5) {
+    const maxLon = 72.80;
+    if (cLon > maxLon) cLon = maxLon - 0.02;
+  } else if (cLat > 20.5 && cLat <= 23.0) {
+    if (cLat <= 22.2 && cLon > 72.35) cLon = 72.30;
+    else if (cLat > 22.2 && cLon > 70.3 && cLon < 72.5 && cLon > 72.05) cLon = 72.00;
+  }
+
+  // East Coast India (Bay of Bengal)
+  if (cLat >= 12.8 && cLat <= 13.6) {
+    const minLon = 80.33;
+    if (cLon < minLon) cLon = minLon + 0.02;
+  } else if (cLat >= 10.0 && cLat < 12.8) {
+    const minLon = 79.82 + (cLat - 10.0) * (0.51 / 2.8);
+    if (cLon < minLon) cLon = minLon + 0.02;
+  } else if (cLat > 13.6 && cLat <= 17.5) {
+    const minLon = 80.33 + (cLat - 13.6) * (2.95 / 3.9);
+    if (cLon < minLon) cLon = minLon + 0.02;
+  }
+
+  return [cLat, cLon];
+}
+
+// ════════════════════════════════════════════════════════════════════════════
 // BASEMAP LAYER — dynamic URL switch without recreating MapContainer
 // ════════════════════════════════════════════════════════════════════════════
 export function BasemapLayer({ basemap = "satellite" }) {
@@ -111,9 +152,10 @@ export function interpolateVesselPosition(vessel, selectedTime) {
   const rootCog = Number(vessel.cog ?? vessel.heading ?? vessel.course ?? 0);
 
   if (!selectedTime) {
+    const [clat, clon] = clampToSea(!isNaN(rootLat) ? rootLat : 9.84, !isNaN(rootLon) ? rootLon : 75.92);
     return {
-      lat: !isNaN(rootLat) ? rootLat : 9.84,
-      lon: !isNaN(rootLon) ? rootLon : 75.92,
+      lat: clat,
+      lon: clon,
       heading: rootCog,
     };
   }
@@ -122,29 +164,33 @@ export function interpolateVesselPosition(vessel, selectedTime) {
   const pts = rawTrack
     .filter((p) => (p.latitude != null || p.lat != null) && (p.longitude != null || p.lon != null) && (p.timestamp || p.time))
     .map((p) => {
-      const lat = Number(p.latitude ?? p.lat);
-      const lon = Number(p.longitude ?? p.lon);
+      const [clat, clon] = clampToSea(Number(p.latitude ?? p.lat), Number(p.longitude ?? p.lon));
       const t = new Date(p.timestamp || p.time).getTime();
       const heading = p.heading != null ? Number(p.heading) : (p.cog != null ? Number(p.cog) : rootCog);
-      return { lat, lon, t, heading };
+      return { lat: clat, lon: clon, t, heading };
     })
     .filter((p) => !isNaN(p.lat) && !isNaN(p.lon) && !isNaN(p.t))
     .sort((a, b) => a.t - b.t);
 
   if (!pts.length) {
+    const [clat, clon] = clampToSea(!isNaN(rootLat) ? rootLat : 9.84, !isNaN(rootLon) ? rootLon : 75.92);
     return {
-      lat: !isNaN(rootLat) ? rootLat : 9.84,
-      lon: !isNaN(rootLon) ? rootLon : 75.92,
+      lat: clat,
+      lon: clon,
       heading: rootCog,
     };
   }
 
   const t = selectedTime instanceof Date ? selectedTime.getTime() : new Date(selectedTime).getTime();
 
-  if (t <= pts[0].t) return { lat: pts[0].lat, lon: pts[0].lon, heading: pts[0].heading ?? rootCog };
+  if (t <= pts[0].t) {
+    const [clat, clon] = clampToSea(pts[0].lat, pts[0].lon);
+    return { lat: clat, lon: clon, heading: pts[0].heading ?? rootCog };
+  }
   if (t >= pts[pts.length - 1].t) {
     const last = pts[pts.length - 1];
-    return { lat: last.lat, lon: last.lon, heading: last.heading ?? rootCog };
+    const [clat, clon] = clampToSea(last.lat, last.lon);
+    return { lat: clat, lon: clon, heading: last.heading ?? rootCog };
   }
 
   for (let i = 0; i < pts.length - 1; i++) {
@@ -153,15 +199,17 @@ export function interpolateVesselPosition(vessel, selectedTime) {
       const frac = denom > 0 ? (t - pts[i].t) / denom : 0;
       const lat = pts[i].lat + frac * (pts[i + 1].lat - pts[i].lat);
       const lon = pts[i].lon + frac * (pts[i + 1].lon - pts[i].lon);
+      const [clat, clon] = clampToSea(lat, lon);
       const dLat = pts[i + 1].lat - pts[i].lat;
       const dLon = pts[i + 1].lon - pts[i].lon;
       const heading = ((Math.atan2(dLon, dLat) * 180) / Math.PI + 360) % 360;
-      return { lat, lon, heading: isNaN(heading) ? (pts[i].heading ?? rootCog) : heading };
+      return { lat: clat, lon: clon, heading: isNaN(heading) ? (pts[i].heading ?? rootCog) : heading };
     }
   }
+  const [clat, clon] = clampToSea(!isNaN(rootLat) ? rootLat : 9.84, !isNaN(rootLon) ? rootLon : 75.92);
   return {
-    lat: !isNaN(rootLat) ? rootLat : 9.84,
-    lon: !isNaN(rootLon) ? rootLon : 75.92,
+    lat: clat,
+    lon: clon,
     heading: rootCog,
   };
 }
@@ -224,17 +272,19 @@ export function generateIrregularOvalSlick(polygonCoords, centroid, charData) {
       const ey = rMin * scale * Math.sin(th) * noise;
       const rLon = ex * Math.cos(orRad) - ey * Math.sin(orRad);
       const rLat = ex * Math.sin(orRad) + ey * Math.cos(orRad);
-      pts.push([cLat + rLat, cLon + rLon]);
+      const [clat, clon] = clampToSea(cLat + rLat, cLon + rLon);
+      pts.push([clat, clon]);
     }
     pts.push(pts[0]);
     return pts;
   };
 
+  const [clatCentroid, clonCentroid] = clampToSea(cLat, cLon);
   return {
     sheenRing:     buildContour(1.22, 0.4,  0.8),
     mainBody:      buildContour(1.0,  1.2,  1.0),
     denseCore:     buildContour(0.52, 2.1,  0.65),
-    centroidPoint: [cLat, cLon],
+    centroidPoint: [clatCentroid, clonCentroid],
   };
 }
 
@@ -338,9 +388,11 @@ export function ForecastSlickLayer({ centroid, charData, selectedTime, detection
       .map((s) => {
         const { dLat, dLon } = driftPerHour(s.hours);
         const fc = forecastData?.points?.find((p) => Math.abs((p.hours_ahead || 0) - s.hours) < 1.5);
-        const fcCentroid = fc
-          ? { latitude: fc.latitude, longitude: fc.longitude }
-          : { latitude: (centroid?.latitude || 19.12) + dLat, longitude: (centroid?.longitude || 71.85) + dLon };
+        const [clampedLat, clampedLon] = clampToSea(
+          fc ? fc.latitude : (centroid?.latitude || 19.12) + dLat,
+          fc ? fc.longitude : (centroid?.longitude || 71.85) + dLon
+        );
+        const fcCentroid = { latitude: clampedLat, longitude: clampedLon };
         const geom = generateIrregularOvalSlick(null, fcCentroid, {
           length_km: (parseFloat(charData?.length_km) || 8.4) * s.scale,
           width_km:  (parseFloat(charData?.width_km) || 2.8)  * s.scale,
@@ -601,16 +653,19 @@ export function DriftOverlaysLayer({
 }) {
   const hindcastLine = useMemo(() => {
     const raw = hindcast?.trajectory || [];
-    return raw.map((p) => [p.latitude, p.longitude]).filter((p) => p[0] != null && !isNaN(p[0]));
+    return raw.map((p) => clampToSea(p.latitude, p.longitude)).filter((p) => p[0] != null && !isNaN(p[0]));
   }, [hindcast]);
 
   const forecastLine = useMemo(() => {
     const raw = forecast?.points || forecast?.trajectory || [];
-    return raw.map((p) => [p.latitude, p.longitude]).filter((p) => p[0] != null && !isNaN(p[0]));
+    return raw.map((p) => clampToSea(p.latitude, p.longitude)).filter((p) => p[0] != null && !isNaN(p[0]));
   }, [forecast]);
 
   const origin = useMemo(() => {
-    return hindcast?.probable_origin || directOrigin || null;
+    const orig = hindcast?.probable_origin || directOrigin || null;
+    if (!orig || orig.latitude == null) return null;
+    const [clat, clon] = clampToSea(orig.latitude, orig.longitude);
+    return { ...orig, latitude: clat, longitude: clon };
   }, [hindcast, directOrigin]);
 
   const originRad = (hindcast?.uncertainty_radius_km || 3.85) * 1000;

@@ -29,6 +29,7 @@ from backend.routes import (
     satellite,
     cases,
     live,
+    copilot,
 )
 from backend.schemas import InvestigationRequest
 from backend.services.pipeline import run_investigation
@@ -75,10 +76,28 @@ app.include_router(drift.router, prefix="/api", tags=["drift"])
 app.include_router(report.router, prefix="/api", tags=["report"])
 app.include_router(cases.router, prefix="/api", tags=["cases"])
 app.include_router(live.router, prefix="/api", tags=["live"])
+app.include_router(copilot.router, prefix="/api", tags=["copilot"])
 
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/static/data", StaticFiles(directory=str(DATA_DIR)), name="data")
+
+KERALA_DIR = ROOT / "kerala"
+if KERALA_DIR.exists():
+    app.mount("/static/kerala", StaticFiles(directory=str(KERALA_DIR)), name="kerala")
+
+
+@app.get("/api/evidence/sitrep-pdf")
+def get_official_sitrep_pdf():
+    sitrep_path = ROOT / "kerela accident.pdf"
+    if not sitrep_path.exists():
+        raise HTTPException(status_code=404, detail="Official SITREP document not found.")
+    return FileResponse(
+        sitrep_path,
+        media_type="application/pdf",
+        filename="Indian_Coast_Guard_MSC_ELSA_3_SITREP.pdf",
+        headers={"Content-Disposition": 'inline; filename="Indian_Coast_Guard_MSC_ELSA_3_SITREP.pdf"'}
+    )
 
 
 @app.post("/api/investigation")

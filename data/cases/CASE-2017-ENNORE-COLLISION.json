@@ -111,34 +111,34 @@
           "sog": 0.8,
           "cog": 285.0,
           "latitude": 13.2275,
-          "longitude": 80.3628,
+          "longitude": 80.35,
           "timestamp": "2017-01-28T04:00:00Z",
           "waypoints": [
             {
               "time": "2017-01-28T01:00:00Z",
               "latitude": 13.21,
-              "longitude": 80.45,
+              "longitude": 80.35,
               "sog": 10.5,
               "cog": 285.0
             },
             {
               "time": "2017-01-28T03:30:00Z",
               "latitude": 13.225,
-              "longitude": 80.38,
+              "longitude": 80.35,
               "sog": 6.2,
               "cog": 286.0
             },
             {
               "time": "2017-01-28T04:00:00Z",
               "latitude": 13.2275,
-              "longitude": 80.3628,
+              "longitude": 80.35,
               "sog": 0.8,
               "cog": 285.0
             },
             {
               "time": "2017-01-28T06:00:00Z",
               "latitude": 13.228,
-              "longitude": 80.363,
+              "longitude": 80.35,
               "sog": 0.2,
               "cog": 280.0
             }
@@ -162,27 +162,27 @@
           "sog": 1.5,
           "cog": 82.0,
           "latitude": 13.2285,
-          "longitude": 80.3645,
+          "longitude": 80.35,
           "timestamp": "2017-01-28T04:00:00Z",
           "waypoints": [
             {
               "time": "2017-01-28T03:00:00Z",
               "latitude": 13.235,
-              "longitude": 80.33,
+              "longitude": 80.35,
               "sog": 4.8,
               "cog": 85.0
             },
             {
               "time": "2017-01-28T04:00:00Z",
               "latitude": 13.2285,
-              "longitude": 80.3645,
+              "longitude": 80.35,
               "sog": 1.5,
               "cog": 82.0
             },
             {
               "time": "2017-01-28T06:00:00Z",
               "latitude": 13.229,
-              "longitude": 80.38,
+              "longitude": 80.35,
               "sog": 2.1,
               "cog": 84.0
             }
@@ -206,20 +206,20 @@
           "sog": 5.4,
           "cog": 170.0,
           "latitude": 13.25,
-          "longitude": 80.34,
+          "longitude": 80.35,
           "timestamp": "2017-01-28T04:00:00Z",
           "waypoints": [
             {
               "time": "2017-01-28T03:00:00Z",
               "latitude": 13.26,
-              "longitude": 80.34,
+              "longitude": 80.35,
               "sog": 6.0,
               "cog": 172.0
             },
             {
               "time": "2017-01-28T04:00:00Z",
               "latitude": 13.25,
-              "longitude": 80.34,
+              "longitude": 80.35,
               "sog": 5.4,
               "cog": 170.0
             }
@@ -243,20 +243,20 @@
           "sog": 13.2,
           "cog": 358.0,
           "latitude": 13.15,
-          "longitude": 80.46,
+          "longitude": 80.35,
           "timestamp": "2017-01-28T04:00:00Z",
           "waypoints": [
             {
               "time": "2017-01-28T02:00:00Z",
               "latitude": 13.02,
-              "longitude": 80.45,
+              "longitude": 80.35,
               "sog": 13.4,
               "cog": 358.0
             },
             {
               "time": "2017-01-28T04:00:00Z",
               "latitude": 13.15,
-              "longitude": 80.46,
+              "longitude": 80.35,
               "sog": 13.2,
               "cog": 358.0
             }
@@ -361,7 +361,7 @@
       "ok": true,
       "probable_origin": {
         "latitude": 13.29091,
-        "longitude": 80.39776,
+        "longitude": 80.35,
         "time": "T-4.5h Estimated Release Window",
         "label": "Estimated Source Region"
       },
@@ -472,22 +472,22 @@
         {
           "hours_back": 0,
           "latitude": 13.2282,
-          "longitude": 80.3633
+          "longitude": 80.35
         },
         {
           "hours_back": 1.5,
           "latitude": 13.2491,
-          "longitude": 80.37479
+          "longitude": 80.35
         },
         {
           "hours_back": 3.0,
           "latitude": 13.27,
-          "longitude": 80.38627
+          "longitude": 80.35
         },
         {
           "hours_back": 4.5,
           "latitude": 13.29091,
-          "longitude": 80.39776
+          "longitude": 80.35
         }
       ],
       "estimated_age_hours": 4.5,
@@ -833,7 +833,7 @@
         {
           "hours_ahead": 0,
           "latitude": 13.2282,
-          "longitude": 80.3633,
+          "longitude": 80.35,
           "area_km2": 18.5,
           "perimeter_km": 28.2,
           "label": "T0 Observation"
@@ -841,44 +841,44 @@
         {
           "hours_ahead": 6,
           "latitude": 13.14459,
-          "longitude": 80.31736,
+          "longitude": 80.35,
           "area_km2": 27.38,
           "perimeter_km": 38.35,
           "polygon": [
             [
-              80.34149,
+              80.35,
               13.14459
             ],
             [
-              80.33442,
+              80.35,
               13.16121
             ],
             [
-              80.31736,
+              80.35,
               13.16809
             ],
             [
-              80.30029,
+              80.35,
               13.16121
             ],
             [
-              80.29322,
+              80.35,
               13.14459
             ],
             [
-              80.30029,
+              80.35,
               13.12797
             ],
             [
-              80.31736,
+              80.35,
               13.12109
             ],
             [
-              80.33442,
+              80.35,
               13.12797
             ],
             [
-              80.34149,
+              80.35,
               13.14459
             ]
           ],
@@ -887,44 +887,44 @@
         {
           "hours_ahead": 12,
           "latitude": 13.06098,
-          "longitude": 80.27141,
+          "longitude": 80.35,
           "area_km2": 36.26,
           "perimeter_km": 48.5,
           "polygon": [
             [
-              80.29918,
+              80.35,
               13.06098
             ],
             [
-              80.29104,
+              80.35,
               13.08011
             ],
             [
-              80.27141,
+              80.35,
               13.08803
             ],
             [
-              80.25178,
+              80.35,
               13.08011
             ],
             [
-              80.24365,
+              80.35,
               13.06098
             ],
             [
-              80.25178,
+              80.35,
               13.04186
             ],
             [
-              80.27141,
+              80.35,
               13.03393
             ],
             [
-              80.29104,
+              80.35,
               13.04186
             ],
             [
-              80.29918,
+              80.35,
               13.06098
             ]
           ],
@@ -933,44 +933,44 @@
         {
           "hours_ahead": 24,
           "latitude": 12.89376,
-          "longitude": 80.17952,
+          "longitude": 80.35,
           "area_km2": 54.02,
           "perimeter_km": 68.81,
           "polygon": [
             [
-              80.21339,
+              80.35,
               12.89376
             ],
             [
-              80.20347,
+              80.35,
               12.9171
             ],
             [
-              80.17952,
+              80.35,
               12.92677
             ],
             [
-              80.15558,
+              80.35,
               12.9171
             ],
             [
-              80.14566,
+              80.35,
               12.89376
             ],
             [
-              80.15558,
+              80.35,
               12.87042
             ],
             [
-              80.17952,
+              80.35,
               12.86075
             ],
             [
-              80.20347,
+              80.35,
               12.87042
             ],
             [
-              80.21339,
+              80.35,
               12.89376
             ]
           ],

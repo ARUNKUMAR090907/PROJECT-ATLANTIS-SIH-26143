@@ -5,7 +5,7 @@ import LiveMode from "./modes/LiveMode.jsx";
 import DemoMode from "./modes/DemoMode.jsx";
 
 // Detail investigation pages
-import DashboardPage from "./pages/DashboardPage.jsx";
+import InvestigationCopilotPage from "./pages/InvestigationCopilotPage.jsx";
 import NewCaseUpload from "./pages/NewCaseUpload.jsx";
 import CaseAnalysisPage from "./pages/CaseAnalysisPage.jsx";
 import SpillDetectionPage from "./pages/SpillDetectionPage.jsx";
@@ -35,7 +35,7 @@ function PageRouter() {
   }
 
   const pageMap = {
-    dashboard: <DashboardPage />,
+    copilot: <InvestigationCopilotPage />,
     upload: <NewCaseUpload />,
     analysis: <CaseAnalysisPage />,
     detection: <SpillDetectionPage />,
@@ -75,7 +75,7 @@ function InvestigationSidebar() {
 
   const nav = [
     { id: "map", icon: "🗺", label: "Live Map", section: null },
-    { id: "dashboard", icon: "📊", label: "Case Dashboard", section: "INVESTIGATION" },
+    { id: "copilot", icon: "🤖", label: "Investigation Copilot", section: "INVESTIGATION" },
     { id: "upload", icon: "📁", label: "Data Upload", section: null },
     { id: "analysis", icon: "⚙️", label: "Run Analysis", section: null },
     { id: "detection", icon: "📡", label: "Spill Detection", section: null },
@@ -87,6 +87,8 @@ function InvestigationSidebar() {
     { id: "history", icon: "🗃", label: "Case History", section: "SYSTEM" },
     { id: "systemhealth", icon: "💊", label: "System Health", section: null },
   ];
+
+  // Remove DashboardPage import reference — dashboard nav entry removed
 
   let lastSection = null;
 

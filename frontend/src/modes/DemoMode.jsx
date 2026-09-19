@@ -180,15 +180,15 @@ export default function DemoMode() {
 
         {/* Pipeline Actions */}
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Deep Dive Investigation Workflow */}
+          {/* Investigation Copilot & Evidence Fusion */}
           <button
-            onClick={() => navigateTo("dashboard")}
+            onClick={() => navigateTo("copilot")}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-700/80 to-indigo-700/80 hover:from-purple-600 hover:to-indigo-600 border border-purple-500/40 text-white font-medium text-xs shadow-lg shadow-purple-950/40 transition"
-            title="Open detailed step-by-step investigation workflow"
+            title="Open Investigation Copilot & Evidence Fusion"
           >
-            <LayoutDashboard size={14} />
-            <span className="hidden sm:inline">Investigation Workflow</span>
-            <span className="sm:hidden">Workflow</span>
+            <Sparkles size={14} className="text-yellow-300" />
+            <span className="hidden sm:inline">Investigation Copilot</span>
+            <span className="sm:hidden">Copilot</span>
           </button>
           {/* Run Analysis button */}
           <button

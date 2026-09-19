@@ -12,9 +12,9 @@
     "longitude": 80.3167
   },
   "bounding_box": [
-    80.20,
+    80.2,
     13.15,
-    80.40,
+    80.4,
     13.35
   ],
   "inputs": {
@@ -24,7 +24,12 @@
         "scene_id": "S1A_IW_GRDH_1SDV_20231128T003500_ENNORE_BASELINE",
         "source": "Sentinel-1A SAR IW GRD (Copernicus CDSE)",
         "status": "Pre-Cyclone Baseline",
-        "bounding_box": [80.20, 13.15, 80.40, 13.35]
+        "bounding_box": [
+          80.2,
+          13.15,
+          80.4,
+          13.35
+        ]
       },
       "t0_spill": {
         "timestamp": "2023-12-04T07:00:00Z",
@@ -41,16 +46,45 @@
           "longitude": 80.3167
         },
         "polygon": [
-          [80.305, 13.245],
-          [80.325, 13.242],
-          [80.345, 13.238],
-          [80.362, 13.232],
-          [80.355, 13.220],
-          [80.332, 13.225],
-          [80.312, 13.232],
-          [80.305, 13.245]
+          [
+            80.305,
+            13.245
+          ],
+          [
+            80.325,
+            13.242
+          ],
+          [
+            80.345,
+            13.238
+          ],
+          [
+            80.362,
+            13.232
+          ],
+          [
+            80.355,
+            13.22
+          ],
+          [
+            80.332,
+            13.225
+          ],
+          [
+            80.312,
+            13.232
+          ],
+          [
+            80.305,
+            13.245
+          ]
         ],
-        "bounding_box": [80.30, 13.21, 80.37, 13.25],
+        "bounding_box": [
+          80.3,
+          13.21,
+          80.37,
+          13.25
+        ],
         "image_url": "/static/data/satellite/demo_sar.png"
       }
     },
@@ -61,7 +95,7 @@
         "start": "2023-12-03T18:00:00Z",
         "end": "2023-12-05T06:00:00Z"
       },
-      "geographic_coverage": "Ennore Anchorage & Kamarajar Port (13.15°N-13.35°N, 80.28°E-80.45°E)",
+      "geographic_coverage": "Ennore Anchorage & Kamarajar Port (13.15\u00b0N-13.35\u00b0N, 80.28\u00b0E-80.45\u00b0E)",
       "vessels": [
         {
           "mmsi": "419001432",
@@ -80,12 +114,24 @@
           "sog": 2.1,
           "cog": 110.0,
           "latitude": 13.242,
-          "longitude": 80.355,
+          "longitude": 80.35,
           "timestamp": "2023-12-04T07:00:00Z",
           "is_innocent_bystander": true,
           "waypoints": [
-            {"time": "2023-12-04T04:00:00Z", "latitude": 13.25, "longitude": 80.35, "sog": 3.2, "cog": 112.0},
-            {"time": "2023-12-04T07:00:00Z", "latitude": 13.242, "longitude": 80.355, "sog": 2.1, "cog": 110.0}
+            {
+              "time": "2023-12-04T04:00:00Z",
+              "latitude": 13.25,
+              "longitude": 80.35,
+              "sog": 3.2,
+              "cog": 112.0
+            },
+            {
+              "time": "2023-12-04T07:00:00Z",
+              "latitude": 13.242,
+              "longitude": 80.35,
+              "sog": 2.1,
+              "cog": 110.0
+            }
           ]
         },
         {
@@ -105,12 +151,24 @@
           "sog": 0.3,
           "cog": 45.0,
           "latitude": 13.265,
-          "longitude": 80.38,
+          "longitude": 80.35,
           "timestamp": "2023-12-04T07:00:00Z",
           "is_innocent_bystander": true,
           "waypoints": [
-            {"time": "2023-12-04T02:00:00Z", "latitude": 13.265, "longitude": 80.38, "sog": 0.2, "cog": 45.0},
-            {"time": "2023-12-04T07:00:00Z", "latitude": 13.265, "longitude": 80.38, "sog": 0.3, "cog": 45.0}
+            {
+              "time": "2023-12-04T02:00:00Z",
+              "latitude": 13.265,
+              "longitude": 80.35,
+              "sog": 0.2,
+              "cog": 45.0
+            },
+            {
+              "time": "2023-12-04T07:00:00Z",
+              "latitude": 13.265,
+              "longitude": 80.35,
+              "sog": 0.3,
+              "cog": 45.0
+            }
           ]
         }
       ]
@@ -152,21 +210,48 @@
       "detected": true,
       "confidence": 0.952,
       "source_scene": "Sentinel-1 SAR + Sentinel-2 MSI Optical (Copernicus CDSE)",
-      "centroid": {"latitude": 13.2361, "longitude": 80.3167},
+      "centroid": {
+        "latitude": 13.2361,
+        "longitude": 80.3167
+      },
       "area_km2": 20.4,
       "perimeter_km": 32.8,
       "length_km": 11.2,
       "width_km": 2.6,
       "orientation_deg": 85.0,
       "polygon": [
-        [80.305, 13.245],
-        [80.325, 13.242],
-        [80.345, 13.238],
-        [80.362, 13.232],
-        [80.355, 13.220],
-        [80.332, 13.225],
-        [80.312, 13.232],
-        [80.305, 13.245]
+        [
+          80.305,
+          13.245
+        ],
+        [
+          80.325,
+          13.242
+        ],
+        [
+          80.345,
+          13.238
+        ],
+        [
+          80.362,
+          13.232
+        ],
+        [
+          80.355,
+          13.22
+        ],
+        [
+          80.332,
+          13.225
+        ],
+        [
+          80.312,
+          13.232
+        ],
+        [
+          80.305,
+          13.245
+        ]
       ],
       "status": "Completed"
     },
@@ -174,13 +259,17 @@
       "ok": true,
       "probable_origin": {
         "latitude": 13.2361,
-        "longitude": 80.3167,
+        "longitude": 80.35,
         "time": "2023-12-04 07:00 UTC Discharge Peak",
         "label": "Ennore Creek / Buckingham Canal Confluence"
       },
       "uncertainty_radius_km": 1.2,
       "trajectory": [
-        {"hours_back": 0, "latitude": 13.2361, "longitude": 80.3167}
+        {
+          "hours_back": 0,
+          "latitude": 13.2361,
+          "longitude": 80.35
+        }
       ],
       "status": "Completed"
     },
@@ -228,9 +317,27 @@
     "forecast": {
       "ok": true,
       "points": [
-        {"hours_ahead": 0, "latitude": 13.2361, "longitude": 80.3167, "area_km2": 20.4, "label": "Creek Mouth Outflow (T0)"},
-        {"hours_ahead": 6, "latitude": 13.215, "longitude": 80.335, "area_km2": 23.8, "label": "PREDICTED T+6h (Coastal Shoreline Spread)"},
-        {"hours_ahead": 12, "latitude": 13.185, "longitude": 80.342, "area_km2": 27.5, "label": "PREDICTED T+12h (Southward Plume along Ernavur/Tiruvottiyur Coast)"}
+        {
+          "hours_ahead": 0,
+          "latitude": 13.2361,
+          "longitude": 80.35,
+          "area_km2": 20.4,
+          "label": "Creek Mouth Outflow (T0)"
+        },
+        {
+          "hours_ahead": 6,
+          "latitude": 13.215,
+          "longitude": 80.35,
+          "area_km2": 23.8,
+          "label": "PREDICTED T+6h (Coastal Shoreline Spread)"
+        },
+        {
+          "hours_ahead": 12,
+          "latitude": 13.185,
+          "longitude": 80.35,
+          "area_km2": 27.5,
+          "label": "PREDICTED T+12h (Southward Plume along Ernavur/Tiruvottiyur Coast)"
+        }
       ],
       "status": "Completed"
     }

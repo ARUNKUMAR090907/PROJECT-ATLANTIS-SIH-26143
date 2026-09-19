@@ -15,6 +15,7 @@ import {
   Layers,
 } from "lucide-react";
 import { useCase } from "../context/CaseContext.jsx";
+import { clampToSea } from "../components/MapLayers.jsx";
 
 const t0MarkerIcon = L.divIcon({
   className: "t0-pin",
@@ -37,24 +38,33 @@ export default function OriginBacktrackingPage() {
   const wind = currentCase?.inputs?.wind?.primary_vector || {};
   const current = currentCase?.inputs?.ocean_current?.primary_vector || {};
 
-  const probableOrigin = hindcast.probable_origin || {
+  const rawOrigin = hindcast.probable_origin || {
     latitude: 9.78,
     longitude: 75.82,
     time: "T-4.5h Estimated Release Window",
   };
 
-  const t0Centroid = detection?.centroid || { latitude: 9.842, longitude: 75.918 };
+  const [origLat, origLon] = clampToSea(rawOrigin.latitude, rawOrigin.longitude);
+  const probableOrigin = {
+    ...rawOrigin,
+    latitude: origLat,
+    longitude: origLon,
+  };
+
+  const rawCentroid = detection?.centroid || { latitude: 9.842, longitude: 75.918 };
+  const [cLat, cLon] = clampToSea(rawCentroid.latitude, rawCentroid.longitude);
+  const t0Centroid = { latitude: cLat, longitude: cLon };
 
   // Trajectory points [[lat, lon], ...]
   const trajectoryLatLngs = useMemo(() => {
     const pts = hindcast.trajectory || [];
-    return pts.map((p) => [p.latitude, p.longitude]);
+    return pts.map((p) => clampToSea(p.latitude, p.longitude));
   }, [hindcast]);
 
   // Uncertainty polygon [[lat, lon], ...]
   const uncertaintyLatLngs = useMemo(() => {
     const ring = hindcast.uncertainty_polygon || [];
-    return ring.map((p) => [p[1], p[0]]);
+    return ring.map((p) => clampToSea(p[1], p[0]));
   }, [hindcast]);
 
   const mapCenter = [

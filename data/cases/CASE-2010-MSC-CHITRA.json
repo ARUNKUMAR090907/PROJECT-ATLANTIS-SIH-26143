@@ -73,27 +73,27 @@
           "sog": 0.3,
           "cog": 210.0,
           "latitude": 18.85,
-          "longitude": 72.8167,
+          "longitude": 72.75813,
           "timestamp": "2010-08-07T09:58:00Z",
           "waypoints": [
             {
               "time": "2010-08-07T08:30:00Z",
               "latitude": 18.92,
-              "longitude": 72.84,
+              "longitude": 72.745,
               "sog": 8.5,
               "cog": 210.0
             },
             {
               "time": "2010-08-07T09:58:00Z",
               "latitude": 18.85,
-              "longitude": 72.8167,
+              "longitude": 72.75813,
               "sog": 0.3,
               "cog": 210.0
             },
             {
               "time": "2010-08-07T12:00:00Z",
               "latitude": 18.851,
-              "longitude": 72.817,
+              "longitude": 72.75794,
               "sog": 0.0,
               "cog": 210.0
             }
@@ -117,7 +117,7 @@
           "sog": 0.6,
           "cog": 35.0,
           "latitude": 18.8515,
-          "longitude": 72.818,
+          "longitude": 72.75784,
           "timestamp": "2010-08-07T09:58:00Z",
           "waypoints": [
             {
@@ -130,7 +130,7 @@
             {
               "time": "2010-08-07T09:58:00Z",
               "latitude": 18.8515,
-              "longitude": 72.818,
+              "longitude": 72.75784,
               "sog": 0.6,
               "cog": 35.0
             }
@@ -309,17 +309,17 @@
         {
           "hours_back": 0,
           "latitude": 18.85,
-          "longitude": 72.8167
+          "longitude": 72.75813
         },
         {
           "hours_back": 1.5,
           "latitude": 18.8646,
-          "longitude": 72.79591
+          "longitude": 72.75539
         },
         {
           "hours_back": 3.0,
           "latitude": 18.87919,
-          "longitude": 72.77512
+          "longitude": 72.75265
         },
         {
           "hours_back": 4.5,
@@ -535,7 +535,7 @@
         {
           "hours_ahead": 0,
           "latitude": 18.85,
-          "longitude": 72.8167,
+          "longitude": 72.75813,
           "area_km2": null,
           "perimeter_km": null,
           "label": "T0 Observation"
@@ -543,7 +543,7 @@
         {
           "hours_ahead": 6,
           "latitude": 18.79161,
-          "longitude": 72.89986,
+          "longitude": 72.76907,
           "area_km2": null,
           "perimeter_km": null,
           "polygon": [],
@@ -552,7 +552,7 @@
         {
           "hours_ahead": 12,
           "latitude": 18.73323,
-          "longitude": 72.98302,
+          "longitude": 72.78002,
           "area_km2": null,
           "perimeter_km": null,
           "polygon": [],
@@ -561,7 +561,7 @@
         {
           "hours_ahead": 24,
           "latitude": 18.61646,
-          "longitude": 73.14934,
+          "longitude": 72.80191,
           "area_km2": null,
           "perimeter_km": null,
           "polygon": [],
