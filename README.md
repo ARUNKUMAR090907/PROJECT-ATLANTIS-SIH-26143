@@ -1,4 +1,4 @@
-# 🌊 ATLANTIS
+#  ATLANTIS
 
 > **Operational Satellite Oil Spill Detection, Hydrodynamic Drift Simulation & Vessel Attribution Platform**  
 > *Developed for Smart India Hackathon 2026 (SIH 2026) | Problem Statement ID: 26143*  
@@ -6,7 +6,7 @@
 
 ---
 
-## 📌 Problem Statement Overview (SIH 2026: PS-26143)
+##  Problem Statement Overview (SIH 2026: PS-26143)
 
 > *"Leveraging satellite imagery to determine oil spills at sea along with AIS data correlations to identify vessel responsible for the spill."*
 
@@ -18,20 +18,20 @@ Maritime oil spills pose severe threats to coastal ecology, marine fisheries, an
 
 ---
 
-## 🏛️ System Architecture & 6-Phase Pipeline
+##  System Architecture & 6-Phase Pipeline
 
 ```mermaid
 flowchart TD
-    A["🛰️ Copernicus CDSE<br/>Sentinel-1 SAR GRD"] --> B["1. SAR ML Segmentation<br/>(PyTorch U-Net &bull; Dice=0.984)"]
+    A[" Copernicus CDSE<br/>Sentinel-1 SAR GRD"] --> B["1. SAR ML Segmentation<br/>(PyTorch U-Net &bull; Dice=0.984)"]
     B --> C["2. Geometric Characterisation<br/>(Area, Perimeter, Aspect Ratio)"]
     
-    D["🌊 CMEMS Surface Currents<br/>(Global Hydrodynamic Model)"] --> E["3. Oceanographic Drift Simulation"]
-    F["💨 Copernicus CDS / ERA5<br/>(10m Atmospheric Winds)"] --> E
+    D[" CMEMS Surface Currents<br/>(Global Hydrodynamic Model)"] --> E["3. Oceanographic Drift Simulation"]
+    F[" Copernicus CDS / ERA5<br/>(10m Atmospheric Winds)"] --> E
     
     C --> E
     E --> G["Probable Origin & Time Window<br/>(Backward Trajectory + Uncertainty Cone)"]
     
-    H["🚢 VesselFinder / INCOIS OON / AIS Feeds<br/>(Maritime Shipping Traffic)"] --> I["4. AIS Spatiotemporal Filtering<br/>(&plusmn;35 km corridor, &plusmn;3.0 h window)"]
+    H[" VesselFinder / INCOIS OON / AIS Feeds<br/>(Maritime Shipping Traffic)"] --> I["4. AIS Spatiotemporal Filtering<br/>(&plusmn;35 km corridor, &plusmn;3.0 h window)"]
     G --> I
     
     I --> J["5. Explainable Vessel Attribution<br/>(5-Factor Weighted Scoring Algorithm)"]
@@ -40,7 +40,7 @@ flowchart TD
 
 ---
 
-## 🌐 4 Multi-Source Data Providers
+##  4 Multi-Source Data Providers
 
 ATLANTIS features a zero-configuration **HYBRID / LIVE data pipeline** that queries genuine open scientific satellite and meteorological feeds:
 
@@ -53,7 +53,7 @@ ATLANTIS features a zero-configuration **HYBRID / LIVE data pipeline** that quer
 
 ---
 
-## 🧠 Deep Learning U-Net Segmentation Engine
+##  Deep Learning U-Net Segmentation Engine
 
 - **Model Architecture:** Lightweight PyTorch U-Net with DoubleConv blocks, Batch Normalization, MaxPool downsampling, TransposeConv upsampling, and skip connections.
 - **Trained Weights:** `ml/weights/unet_oilspill.pt` (Trained with combined BCE + Soft Dice Loss).
@@ -66,7 +66,7 @@ ATLANTIS features a zero-configuration **HYBRID / LIVE data pipeline** that quer
 
 ---
 
-## 🔬 Mathematical Modeling & Attribution Engine
+##  Mathematical Modeling & Attribution Engine
 
 ### 1. Oil Drift Simulation (Ocean Hydrodynamics + Wind Leeway)
 $$\vec{v}_{\text{drift}} = \vec{v}_{\text{current}} + \alpha \cdot \mathbf{R}(\theta_{\text{Coriolis}}) \cdot \vec{v}_{\text{wind}}$$
@@ -85,7 +85,7 @@ $$\text{Score} = 0.30 \cdot S_{\text{proximity}} + 0.25 \cdot S_{\text{temporal}
 
 ---
 
-## 🚀 Quickstart & Setup Guide
+##  Quickstart & Setup Guide
 
 ### 1. Prerequisites
 - Python 3.10+ (Recommended: Python 3.11 / 3.12 / 3.14)
@@ -134,7 +134,7 @@ npm run dev
 
 ---
 
-## 🧪 Automated Test Suite (100% Pass Rate)
+##  Automated Test Suite (100% Pass Rate)
 
 Run the comprehensive pytest suite covering all 35 tests:
 ```powershell
@@ -149,7 +149,7 @@ pytest -v
 
 ---
 
-## ⚖️ Responsible AI & Ethical Disclaimers
+## Responsible AI & Ethical Disclaimers
 
 > [!IMPORTANT]
 > **Decision Support Notice:**  

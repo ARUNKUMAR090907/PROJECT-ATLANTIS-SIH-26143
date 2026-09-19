@@ -31,6 +31,14 @@ export function CaseProvider({ children }) {
   const [loadingStage, setLoadingStage] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
+  // Inner page navigation for the detailed investigation workflow
+  // "map" is the main DemoMode map view; other values correspond to detail pages
+  const [currentPage, setCurrentPage] = useState("map");
+
+  const navigateTo = useCallback((page) => {
+    setCurrentPage(page);
+  }, []);
+
   // Sync mode with hash
   const switchMode = useCallback((mode) => {
     const target = mode.toUpperCase();
@@ -38,6 +46,7 @@ export function CaseProvider({ children }) {
     if (typeof window !== "undefined") {
       window.history.pushState({}, "", `#${target.toLowerCase()}`);
     }
+    setCurrentPage("map");
   }, []);
 
   useEffect(() => {
@@ -96,7 +105,7 @@ export function CaseProvider({ children }) {
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Run analysis pipeline without artificial delays
+  // Run analysis pipeline
   const runAnalysis = useCallback(async () => {
     if (!currentCase?.case_id) return;
     setIsLoading(true);
@@ -116,7 +125,7 @@ export function CaseProvider({ children }) {
     }
   }, [currentCase, loadCase, refreshCasesList]);
 
-  // Run validation against ground truth without artificial delays
+  // Run validation against ground truth
   const runValidation = useCallback(async () => {
     if (!currentCase?.case_id) return;
     setIsLoading(true);
@@ -154,6 +163,9 @@ export function CaseProvider({ children }) {
         loadingStage,
         errorMsg,
         setErrorMsg,
+        currentPage,
+        setCurrentPage,
+        navigateTo,
       }}
     >
       {children}

@@ -1,8 +1,3 @@
-/**
- * DataIntegrityPanel.jsx - Data Provenance & Integrity Display
- * ATLANTIS - SIH 2026 Demonstration
- * Clearly labels every data source as LIVE / NEAR-REAL-TIME / HISTORICAL / SIMULATED / UNAVAILABLE
- */
 import { Activity, AlertTriangle, CheckCircle2, Clock, Database, Globe, Radio, Satellite, Shield, Waves, Wind, XCircle, Zap } from "lucide-react";
 
 const SOURCE_CONFIGS = [
@@ -45,15 +40,15 @@ const SOURCE_CONFIGS = [
 ];
 
 const STATUS_CONFIG = {
-  ONLINE:         { label: "LIVE",             bg: "bg-emerald-500/15", text: "text-emerald-300", border: "border-emerald-500/40", dot: "bg-emerald-400 animate-pulse" },
-  LIVE:           { label: "LIVE",             bg: "bg-emerald-500/15", text: "text-emerald-300", border: "border-emerald-500/40", dot: "bg-emerald-400 animate-pulse" },
-  "NEAR-REAL-TIME":{ label: "NEAR-REAL-TIME", bg: "bg-cyan-500/15",    text: "text-cyan-300",    border: "border-cyan-500/40",    dot: "bg-cyan-400 animate-pulse" },
-  DEMO:           { label: "HISTORICAL",       bg: "bg-amber-500/15",   text: "text-amber-300",   border: "border-amber-500/40",   dot: "bg-amber-400" },
-  HISTORICAL:     { label: "HISTORICAL",       bg: "bg-amber-500/15",   text: "text-amber-300",   border: "border-amber-500/40",   dot: "bg-amber-400" },
-  SIMULATED:      { label: "SIMULATED",        bg: "bg-purple-500/15",  text: "text-purple-300",  border: "border-purple-500/40",  dot: "bg-purple-400" },
-  NOT_CONFIGURED: { label: "UNAVAILABLE",      bg: "bg-slate-500/15",   text: "text-slate-400",   border: "border-slate-500/40",   dot: "bg-slate-500" },
-  OFFLINE:        { label: "OFFLINE",          bg: "bg-red-500/15",     text: "text-red-300",     border: "border-red-500/40",     dot: "bg-red-400" },
-  DEGRADED:       { label: "DEGRADED",         bg: "bg-orange-500/15",  text: "text-orange-300",  border: "border-orange-500/40",  dot: "bg-orange-400" },
+  ONLINE: { label: "LIVE", bg: "bg-emerald-500/15", text: "text-emerald-300", border: "border-emerald-500/40", dot: "bg-emerald-400 animate-pulse" },
+  LIVE: { label: "LIVE", bg: "bg-emerald-500/15", text: "text-emerald-300", border: "border-emerald-500/40", dot: "bg-emerald-400 animate-pulse" },
+  "NEAR-REAL-TIME": { label: "NEAR-REAL-TIME", bg: "bg-cyan-500/15", text: "text-cyan-300", border: "border-cyan-500/40", dot: "bg-cyan-400 animate-pulse" },
+  DEMO: { label: "HISTORICAL", bg: "bg-amber-500/15", text: "text-amber-300", border: "border-amber-500/40", dot: "bg-amber-400" },
+  HISTORICAL: { label: "HISTORICAL", bg: "bg-amber-500/15", text: "text-amber-300", border: "border-amber-500/40", dot: "bg-amber-400" },
+  SIMULATED: { label: "SIMULATED", bg: "bg-purple-500/15", text: "text-purple-300", border: "border-purple-500/40", dot: "bg-purple-400" },
+  NOT_CONFIGURED: { label: "UNAVAILABLE", bg: "bg-slate-500/15", text: "text-slate-400", border: "border-slate-500/40", dot: "bg-slate-500" },
+  OFFLINE: { label: "OFFLINE", bg: "bg-red-500/15", text: "text-red-300", border: "border-red-500/40", dot: "bg-red-400" },
+  DEGRADED: { label: "DEGRADED", bg: "bg-orange-500/15", text: "text-orange-300", border: "border-orange-500/40", dot: "bg-orange-400" },
 };
 
 function getStatus(key, providers) {
@@ -111,8 +106,8 @@ export default function DataIntegrityPanel({ healthData, className = "" }) {
 
   const overallBg = mode === "LIVE" ? "border-emerald-500/30"
     : mode === "HYBRID" ? "border-cyan-500/30"
-    : mode === "DEMO" ? "border-amber-500/30"
-    : "border-navy-700";
+      : mode === "DEMO" ? "border-amber-500/30"
+        : "border-navy-700";
 
   return (
     <div className={`bg-navy-900 border border-navy-700 rounded-xl overflow-hidden ${className}`}>
@@ -124,14 +119,13 @@ export default function DataIntegrityPanel({ healthData, className = "" }) {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-mono text-slate-500">
-            {new Date(ts).toUTCString().replace("GMT","UTC").slice(0,-4)}
+            {new Date(ts).toUTCString().replace("GMT", "UTC").slice(0, -4)}
           </span>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border font-mono ${
-            mode === "LIVE" ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
-            : mode === "HYBRID" ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/40"
-            : mode === "DEMO" ? "bg-amber-500/20 text-amber-300 border-amber-500/40"
-            : "bg-slate-500/20 text-slate-400 border-slate-500/40"
-          }`}>
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border font-mono ${mode === "LIVE" ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+              : mode === "HYBRID" ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/40"
+                : mode === "DEMO" ? "bg-amber-500/20 text-amber-300 border-amber-500/40"
+                  : "bg-slate-500/20 text-slate-400 border-slate-500/40"
+            }`}>
             {mode}
           </span>
         </div>

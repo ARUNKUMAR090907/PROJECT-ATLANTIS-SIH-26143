@@ -1,14 +1,15 @@
 {
   "case_id": "CASE-2025-MSC-ELSA-3",
-  "name": "MSC ELSA 3 Heavy Fuel Oil Discharge",
-  "location": "Kerala Coast, Arabian Sea",
+  "name": "MSC ELSA 3 shipwreck",
+  "location": "Off Kochi / Alappuzha, Kerala",
   "incident_date": "2025-05-25T04:15:00Z",
   "t0_timestamp": "2025-05-25T04:15:00Z",
   "summary": "Forensic investigation of suspected bunker fuel discharge detected off the coast of Kochi/Alappuzha, Kerala during early South-West monsoon season.",
-  "status": "Analysis Completed",
+  "status": "Validated",
+  "map_zoom": 10,
   "coordinates": {
-    "latitude": 9.842,
-    "longitude": 75.918
+    "latitude": 9.5,
+    "longitude": 75.7667
   },
   "bounding_box": [
     75.6,
@@ -859,7 +860,7 @@
     }
   },
   "analysis": {
-    "analyzed_at": "2026-09-15T08:14:08.346071+00:00",
+    "analyzed_at": "2026-09-19T18:40:58.598584+00:00",
     "detection": {
       "detected": true,
       "confidence": 0.948,

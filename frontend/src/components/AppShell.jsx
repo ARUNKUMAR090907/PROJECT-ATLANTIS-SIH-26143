@@ -3,11 +3,13 @@ import {
   Shield,
   Clock,
   Activity,
+  LayoutDashboard,
+  Map,
 } from "lucide-react";
 import { useCase } from "../context/CaseContext.jsx";
 
 export default function AppShell({ children }) {
-  const { appMode, setAppMode } = useCase();
+  const { appMode, setAppMode, navigateTo, currentPage } = useCase();
   const [utcTime, setUtcTime] = useState("");
 
   useEffect(() => {
@@ -37,18 +39,51 @@ export default function AppShell({ children }) {
           </div>
         </div>
 
-        {/* Mode Toggle */}
-        <div className="flex items-center p-1 bg-[#0b162c] rounded-xl border border-[#1a3159] shadow-inner">
-          <button id="mode-live" onClick={() => setAppMode("LIVE")}
-            className={`flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-xs tracking-wider transition uppercase ${appMode==="LIVE"?"bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/25 border border-sky-400/40":"text-slate-400 hover:text-slate-200 hover:bg-[#101f3b]"}`}>
-            <span className={`w-2 h-2 rounded-full ${appMode==="LIVE"?"bg-white animate-pulse":"bg-emerald-400"}`}/>
-            <span>LIVE MODE</span>
-          </button>
-          <button id="mode-demo" onClick={() => setAppMode("DEMO")}
-            className={`flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-xs tracking-wider transition uppercase ${appMode==="DEMO"?"bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/25 border border-purple-400/40":"text-slate-400 hover:text-slate-200 hover:bg-[#101f3b]"}`}>
-            <span className={`w-2 h-2 rounded-full ${appMode==="DEMO"?"bg-white animate-pulse":"bg-purple-400"}`}/>
-            <span>DEMO MODE</span>
-          </button>
+        {/* Center: Mode Toggle + Quick Nav (Demo Mode only) */}
+        <div className="flex items-center gap-2">
+          {/* Mode Toggle */}
+          <div className="flex items-center p-1 bg-[#0b162c] rounded-xl border border-[#1a3159] shadow-inner">
+            <button id="mode-live" onClick={() => setAppMode("LIVE")}
+              className={`flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-xs tracking-wider transition uppercase ${appMode==="LIVE"?"bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/25 border border-sky-400/40":"text-slate-400 hover:text-slate-200 hover:bg-[#101f3b]"}`}>
+              <span className={`w-2 h-2 rounded-full ${appMode==="LIVE"?"bg-white animate-pulse":"bg-emerald-400"}`}/>
+              <span>LIVE MODE</span>
+            </button>
+            <button id="mode-demo" onClick={() => setAppMode("DEMO")}
+              className={`flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-xs tracking-wider transition uppercase ${appMode==="DEMO"?"bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/25 border border-purple-400/40":"text-slate-400 hover:text-slate-200 hover:bg-[#101f3b]"}`}>
+              <span className={`w-2 h-2 rounded-full ${appMode==="DEMO"?"bg-white animate-pulse":"bg-purple-400"}`}/>
+              <span>DEMO MODE</span>
+            </button>
+          </div>
+
+          {/* Demo Mode Quick Navigation */}
+          {appMode === "DEMO" && (
+            <div className="hidden md:flex items-center gap-1 bg-[#0b162c] rounded-xl border border-[#1a3159] p-1 shadow-inner">
+              <button
+                onClick={() => navigateTo("map")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  currentPage === "map"
+                    ? "bg-purple-600/30 text-purple-300 border border-purple-500/40"
+                    : "text-slate-400 hover:text-white hover:bg-[#101f3b]"
+                }`}
+                title="Interactive Forensic Map"
+              >
+                <Map size={12} />
+                <span>Map</span>
+              </button>
+              <button
+                onClick={() => navigateTo("dashboard")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  currentPage === "dashboard"
+                    ? "bg-purple-600/30 text-purple-300 border border-purple-500/40"
+                    : "text-slate-400 hover:text-white hover:bg-[#101f3b]"
+                }`}
+                title="Case Investigation Dashboard"
+              >
+                <LayoutDashboard size={12} />
+                <span>Dashboard</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Right actions */}

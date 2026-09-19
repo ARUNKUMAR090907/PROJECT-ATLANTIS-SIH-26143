@@ -88,33 +88,77 @@ def create_incident(req: IncidentCreateRequest):
 @router.get("/incidents")
 @router.get("/spills")
 def list_incidents():
+    from backend.services.incident_registry import load_all_incidents, calculate_data_quality
+    registry_incidents = load_all_incidents()
+    incidents = []
+
+    # Include all 5 central master incidents first
+    for reg in registry_incidents:
+        dq = calculate_data_quality(reg)
+        incidents.append({
+            "incident_id": reg["incidentId"],
+            "title": reg["incidentName"],
+            "status": reg.get("incidentType", "UNDER INVESTIGATION"),
+            "severity": "HIGH",
+            "latitude": reg["latitude"],
+            "longitude": reg["longitude"],
+            "area_km2": 22.6 if "ELSA" in reg["incidentId"] else 18.5 if "2017" in reg["incidentId"] else 20.4 if "2023" in reg["incidentId"] else 4.2,
+            "detection_confidence": reg.get("detectionConfidence"),
+            "satellite_scene": reg.get("satelliteSources", ["Sentinel-1"])[0] if reg.get("satelliteSources") else "N/A",
+            "observation_time": reg["timestamp"],
+            "created_at": reg["timestamp"],
+            "satellite_status": reg.get("satelliteStatus"),
+            "ais_relevance": reg.get("aisRelevance"),
+            "data_completeness": dq.get("dataCompleteness"),
+            "evidence_confidence": dq.get("evidenceConfidence"),
+            "map_zoom": reg.get("mapZoom", 10),
+            "source_urls": reg.get("sourceUrls", []),
+        })
+
+    # Include existing DB incidents if any exist and not already in list
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("SELECT * FROM incidents ORDER BY created_at DESC")
     rows = cur.fetchall()
     conn.close()
 
-    incidents = []
+    existing_ids = {i["incident_id"] for i in incidents}
     for r in rows:
-        incidents.append({
-            "incident_id": r["incident_id"],
-            "title": r["title"],
-            "status": r["status"],
-            "severity": r["severity"],
-            "latitude": r["latitude"],
-            "longitude": r["longitude"],
-            "area_km2": r["area_km2"],
-            "detection_confidence": r["detection_confidence"],
-            "satellite_scene": r["satellite_scene"],
-            "observation_time": r["observation_time"],
-            "created_at": r["created_at"],
-        })
+        if r["incident_id"] not in existing_ids:
+            incidents.append({
+                "incident_id": r["incident_id"],
+                "title": r["title"],
+                "status": r["status"],
+                "severity": r["severity"],
+                "latitude": r["latitude"],
+                "longitude": r["longitude"],
+                "area_km2": r["area_km2"],
+                "detection_confidence": r["detection_confidence"],
+                "satellite_scene": r["satellite_scene"],
+                "observation_time": r["observation_time"],
+                "created_at": r["created_at"],
+            })
+
     return with_envelope({"incidents": incidents, "count": len(incidents)})
 
 
 @router.get("/incidents/{incident_id}")
 @router.get("/spills/{incident_id}")
 def get_incident(incident_id: str):
+    from backend.services.incident_registry import get_incident_by_id, calculate_data_quality
+    reg = get_incident_by_id(incident_id)
+    if reg:
+        dq = calculate_data_quality(reg)
+        return with_envelope({
+            **reg,
+            "incident_id": reg["incidentId"],
+            "title": reg["incidentName"],
+            "status": reg.get("incidentType", "UNDER INVESTIGATION"),
+            "severity": "HIGH",
+            "observation_time": reg["timestamp"],
+            "dataQualityAnalysis": dq,
+        })
+
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("SELECT * FROM incidents WHERE incident_id = ?", (incident_id,))
@@ -136,6 +180,97 @@ def get_incident(incident_id: str):
         "satellite_scene": row["satellite_scene"],
         "observation_time": row["observation_time"],
         "created_at": row["created_at"],
+    })
+
+
+@router.get("/incidents/{incident_id}/satellite")
+def get_incident_satellite(incident_id: str):
+    from backend.services.incident_registry import get_incident_by_id
+    reg = get_incident_by_id(incident_id)
+    if not reg:
+        raise HTTPException(status_code=404, detail="Incident not found in registry")
+    return with_envelope({
+        "incident_id": reg["incidentId"],
+        "satelliteAvailability": reg.get("satelliteAvailability"),
+        "satelliteStatus": reg.get("satelliteStatus"),
+        "sources": reg.get("satelliteSources", []),
+        "detectionConfidence": reg.get("detectionConfidence"),
+        "notes": reg.get("dataQuality", {}).get("satelliteLimitationNote"),
+    })
+
+
+@router.get("/incidents/{incident_id}/ais")
+def get_incident_ais(incident_id: str):
+    from backend.services.incident_registry import get_incident_by_id
+    from backend.routes.cases import _load_case_file
+    reg = get_incident_by_id(incident_id)
+    if not reg:
+        raise HTTPException(status_code=404, detail="Incident not found")
+    try:
+        case_data = _load_case_file(reg["incidentId"])
+        vessels = case_data.get("inputs", {}).get("ais", {}).get("vessels", [])
+    except Exception:
+        vessels = []
+    return with_envelope({
+        "incident_id": reg["incidentId"],
+        "aisAvailability": reg.get("aisAvailability"),
+        "aisRelevance": reg.get("aisRelevance"),
+        "description": reg.get("aisDescription"),
+        "vessels": vessels,
+        "vessel_count": len(vessels),
+    })
+
+
+@router.get("/incidents/{incident_id}/environment")
+def get_incident_environment(incident_id: str):
+    from backend.services.incident_registry import get_incident_by_id
+    from backend.routes.cases import _load_case_file
+    reg = get_incident_by_id(incident_id)
+    if not reg:
+        raise HTTPException(status_code=404, detail="Incident not found")
+    try:
+        case_data = _load_case_file(reg["incidentId"])
+        wind = case_data.get("inputs", {}).get("wind", {})
+        curr = case_data.get("inputs", {}).get("ocean_current", {})
+    except Exception:
+        wind, curr = {}, {}
+    return with_envelope({
+        "incident_id": reg["incidentId"],
+        "wind": wind,
+        "ocean_current": curr,
+    })
+
+
+@router.get("/incidents/{incident_id}/timeline")
+def get_incident_timeline(incident_id: str):
+    from backend.services.incident_registry import get_incident_by_id
+    reg = get_incident_by_id(incident_id)
+    if not reg:
+        raise HTTPException(status_code=404, detail="Incident not found")
+    return with_envelope({
+        "incident_id": reg["incidentId"],
+        "date": reg["date"],
+        "timestamp": reg["timestamp"],
+        "investigationWindow": reg.get("investigationWindow", {}),
+        "timelineStart": reg.get("timelineStart"),
+        "timelineEnd": reg.get("timelineEnd"),
+    })
+
+
+@router.get("/incidents/{incident_id}/evidence")
+def get_incident_evidence(incident_id: str):
+    from backend.services.incident_registry import get_incident_by_id, calculate_data_quality
+    reg = get_incident_by_id(incident_id)
+    if not reg:
+        raise HTTPException(status_code=404, detail="Incident not found")
+    dq = calculate_data_quality(reg)
+    return with_envelope({
+        "incident_id": reg["incidentId"],
+        "evidenceItems": reg.get("evidenceItems", []),
+        "sourceUrls": reg.get("sourceUrls", []),
+        "dataQuality": dq,
+        "dataCompleteness": dq.get("dataCompleteness"),
+        "evidenceConfidence": dq.get("evidenceConfidence"),
     })
 
 
@@ -193,3 +328,4 @@ def get_incident_report(incident_id: str):
     structured["pdf_download_url"] = pdf_info.get("download_url")
     structured["pdf_filename"] = pdf_info.get("filename")
     return with_envelope(structured)
+

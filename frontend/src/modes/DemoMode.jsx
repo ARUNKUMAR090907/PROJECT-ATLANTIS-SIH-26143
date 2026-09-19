@@ -1,6 +1,7 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { getCaseReportPdfUrl } from "../services/api.js";
-import { MapContainer, ZoomControl } from "react-leaflet";
+import { MapContainer, ZoomControl, useMap } from "react-leaflet";
+import { LayoutDashboard } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import {
   Compass,
@@ -28,6 +29,7 @@ import {
   Download,
   FileText,
   Satellite,
+  Info,
 } from "lucide-react";
 
 import { useCase } from "../context/CaseContext.jsx";
@@ -42,6 +44,20 @@ import {
 import { CanvasVectorLayer } from "../components/CanvasVectorLayer.jsx";
 import TimeMachine from "../components/TimeMachine.jsx";
 import TechnicalProofModal from "../components/TechnicalProofModal.jsx";
+import { getIncidentMetadata } from "../services/incidentRegistry.js";
+
+function MapViewController({ center, zoom }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center && typeof center[0] === "number" && typeof center[1] === "number") {
+      map.flyTo(center, zoom || 10, {
+        duration: 1.2,
+        easeLinearity: 0.25,
+      });
+    }
+  }, [center, zoom, map]);
+  return null;
+}
 
 export default function DemoMode() {
   const {
@@ -52,7 +68,13 @@ export default function DemoMode() {
     runValidation,
     isLoading,
     loadingStage,
+    navigateTo,
   } = useCase();
+
+  // Central Incident Registry metadata lookup
+  const regMeta = useMemo(() => {
+    return getIncidentMetadata(currentCase?.case_id);
+  }, [currentCase]);
 
   // Active side tab in investigation drawer
   const [activeDossierTab, setActiveDossierTab] = useState("attribution"); // "story", "attribution", "validation"
@@ -78,6 +100,12 @@ export default function DemoMode() {
 
   const [selectedTime, setSelectedTime] = useState(detectionDate);
 
+  // AUTOMATIC DATE/TIME SYNCHRONIZATION when incident selection changes:
+  useEffect(() => {
+    setSelectedTime(detectionDate);
+    setSelectedMmsi(null);
+  }, [detectionDate]);
+
   const inputs = currentCase?.inputs || {};
   const sat = inputs.satellite || {};
   const ais = inputs.ais || {};
@@ -90,12 +118,17 @@ export default function DemoMode() {
     return analysis?.attribution?.ranked || [];
   }, [analysis]);
 
-  // Center coordinates
+  // Center coordinates & zoom synchronized with incident
   const mapCenter = useMemo(() => {
-    const lat = currentCase?.coordinates?.latitude || 9.842;
-    const lon = currentCase?.coordinates?.longitude || 75.918;
+    const lat = currentCase?.coordinates?.latitude ?? regMeta?.latitude ?? 9.5000;
+    const lon = currentCase?.coordinates?.longitude ?? regMeta?.longitude ?? 75.7667;
     return [lat, lon];
-  }, [currentCase]);
+  }, [currentCase, regMeta]);
+
+  const mapZoom = useMemo(() => {
+    return currentCase?.map_zoom ?? regMeta?.mapZoom ?? (currentCase?.location?.toLowerCase().includes("port") ? 12 : 10);
+  }, [currentCase, regMeta]);
+
 
   return (
     <div className="relative w-full h-[calc(100vh-4rem)] bg-[#040812] text-slate-200 overflow-hidden flex flex-col">
@@ -130,10 +163,33 @@ export default function DemoMode() {
               <span className="truncate max-w-[180px]">{currentCase?.location}</span>
             </div>
           </div>
+
+          <div className="hidden xl:flex items-center gap-2 font-mono text-[11px] pl-2 border-l border-slate-700">
+            <span className="text-slate-400">Completeness:</span>
+            <span className="text-sky-300 font-bold">{currentCase?.data_completeness || regMeta?.dataCompleteness || 92}%</span>
+            <span className="text-slate-400 ml-1">Confidence:</span>
+            <span className={`font-bold px-1.5 py-0.2 rounded border text-[10px] ${
+              (currentCase?.evidence_confidence || regMeta?.confidence) === "HIGH"
+                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                : "bg-amber-500/20 text-amber-300 border-amber-500/30"
+            }`}>
+              {currentCase?.evidence_confidence || regMeta?.confidence || "HIGH"}
+            </span>
+          </div>
         </div>
 
         {/* Pipeline Actions */}
         <div className="flex items-center gap-2 flex-wrap">
+          {/* Deep Dive Investigation Workflow */}
+          <button
+            onClick={() => navigateTo("dashboard")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-700/80 to-indigo-700/80 hover:from-purple-600 hover:to-indigo-600 border border-purple-500/40 text-white font-medium text-xs shadow-lg shadow-purple-950/40 transition"
+            title="Open detailed step-by-step investigation workflow"
+          >
+            <LayoutDashboard size={14} />
+            <span className="hidden sm:inline">Investigation Workflow</span>
+            <span className="sm:hidden">Workflow</span>
+          </button>
           {/* Run Analysis button */}
           <button
             onClick={runAnalysis}
@@ -143,18 +199,13 @@ export default function DemoMode() {
             <Sparkles size={14} className={isLoading ? "animate-spin" : ""} />
             <span>{isLoading ? loadingStage || "Analyzing..." : "Re-Run AI Pipeline"}</span>
           </button>
-
-
-          {/* Technical Proof Modal toggle */}
           <button
             onClick={() => setShowTechnicalProof(true)}
             className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#0c1933] border border-[#1c3563] hover:border-sky-500/40 text-slate-300 hover:text-white text-xs transition"
           >
-            <FileCheck2 size={14} className="text-sky-400" />
+        <FileCheck2 size={14} className="text-sky-400" />
             <span>Audit Proof</span>
           </button>
-
-          {/* Download PDF Report button */}
           <button
             onClick={async () => {
               if (!currentCase?.case_id) return;
@@ -171,9 +222,11 @@ export default function DemoMode() {
                 link.click();
                 URL.revokeObjectURL(link.href);
                 setReportMsg("PDF downloaded!");
-              } catch (e) {
+              } 
+              catch (e) {
                 setReportMsg("Report error — try Re-Run Pipeline first");
-              } finally {
+              }
+              finally {
                 setIsGeneratingReport(false);
                 setTimeout(() => setReportMsg(""), 3500);
               }
@@ -189,33 +242,26 @@ export default function DemoMode() {
         </div>
       </div>
 
-      {/* WORKSPACE: MAP + RIGHT INVESTIGATION DOSSIER */}
       <div className="relative flex-1 flex overflow-hidden">
-        {/* HERO MAP (Left) */}
         <div className="relative flex-1 h-full w-full">
           <MapContainer
             center={mapCenter}
-            zoom={10}
-            minZoom={5}
-            maxZoom={15}
+            zoom={mapZoom}
+            minZoom={4}
+            maxZoom={16}
             zoomControl={false}
             className="w-full h-full z-0 bg-[#030712]"
           >
+            <MapViewController center={mapCenter} zoom={mapZoom} />
             <ZoomControl position="bottomleft" />
             <BasemapLayer basemap={basemap} />
-
-            {/* Canvas vector field for environmental flow */}
             <CanvasVectorLayer showWind={showWind} showCurrent={showCurrent} />
-
-            {/* T0 Oil Slick Polygon (time-aware: vanishes before T0) */}
             <OilSlickLayer
               polygon={sat?.t0_spill?.polygon || analysis?.detection?.polygon}
               centroid={sat?.t0_spill?.centroid || analysis?.detection?.centroid}
               selectedTime={selectedTime}
               detectionTime={detectionDate}
             />
-
-            {/* Forward Drift Forecast Slick */}
             <ForecastSlickLayer
               centroid={sat?.t0_spill?.centroid || analysis?.detection?.centroid}
               forecastData={analysis?.forecast}
@@ -452,6 +498,20 @@ export default function DemoMode() {
                   <span className="text-[10px] font-mono text-sky-400">Ranked by Evidence</span>
                 </div>
 
+                {(currentCase?.incident_category === "PIPELINE_INFRASTRUCTURE" ||
+                  inputs?.ais?.ais_relevance === "LESS_RELEVANT_PIPELINE" ||
+                  analysis?.attribution?.is_pipeline_incident) && (
+                  <div className="p-3 rounded-xl bg-cyan-950/40 border border-cyan-500/40 space-y-1">
+                    <div className="flex items-center gap-1.5 font-bold text-cyan-300 text-xs">
+                      <ShieldCheck size={14} className="text-cyan-400" />
+                      <span>Pipeline Rupture — AIS Attribution Suppressed</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 leading-relaxed">
+                      Official inquiry confirmed this discharge originated from a subsea pipeline rupture (~55 MT oil). Nearby commercial vessels were normal transits and are NOT polluters.
+                    </p>
+                  </div>
+                )}
+
                 {rankedVessels.length === 0 ? (
                   <div className="p-4 rounded-lg bg-[#0a1428] border border-[#162a52] text-xs text-slate-400 text-center">
                     No suspect analysis generated yet. Click <span className="text-sky-300 font-semibold">"Re-Run AI Pipeline"</span> to correlate AIS trajectories.
@@ -544,21 +604,40 @@ export default function DemoMode() {
             {activeDossierTab === "story" && (
               <div className="space-y-3 text-xs">
                 {/* 1. SAR Detection */}
-                <div className="p-3.5 rounded-xl bg-[#0a1428] border border-[#162a52] space-y-2">
-                  <div className="flex items-center justify-between font-semibold text-slate-200">
-                    <span className="text-sky-300">1. Sentinel-1 SAR Acquisition (T0)</span>
-                    <span className="text-[10px] text-emerald-400 font-mono">CONF: {sat?.t0_spill?.confidence ? (sat.t0_spill.confidence * 100).toFixed(1) + "%" : "94.8%"}</span>
+                {(sat?.t0_spill?.status?.includes("Historical") ||
+                  sat?.t0_spill?.limitation_notice ||
+                  currentCase?.satellite_status === "HISTORICAL_LIMITATION") ? (
+                  <div className="p-3.5 rounded-xl bg-[#0a1428] border border-amber-500/40 space-y-2">
+                    <div className="flex items-center justify-between font-semibold text-slate-200">
+                      <span className="text-amber-400">1. Satellite Radar Observation</span>
+                      <span className="text-[10px] text-amber-300 font-mono px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/30 font-bold">
+                        HISTORICAL LIMITATION
+                      </span>
+                    </div>
+                    <p className="text-slate-300 text-[11px] leading-relaxed">
+                      {sat?.t0_spill?.limitation_notice || "Sentinel-1 was non-operational at incident date (launched April 2014). Synthetic SAR imagery is strictly suppressed to preserve scientific accuracy."}
+                    </p>
+                    <div className="text-[10px] font-mono bg-[#0d1a33] p-2 rounded border border-[#172c54] text-slate-400">
+                      Archive: <span className="text-white font-semibold">{sat?.t0_spill?.source || "MoEF / NEERI Historical Case Studies"}</span>
+                    </div>
                   </div>
-                  <p className="text-slate-300 text-[11px] leading-relaxed">
-                    Copernicus Sentinel-1A IW GRDH C-band synthetic aperture radar acquired off the Kerala coast. U-Net segmentation delineated anomalous low-backscatter oil film.
-                  </p>
-                  <div className="grid grid-cols-2 gap-2 text-[10px] font-mono bg-[#0d1a33] p-2 rounded border border-[#172c54]">
-                    <div>Area: <span className="text-white font-semibold">{sat?.t0_spill?.area_km2 || 22.6} km²</span></div>
-                    <div>Perimeter: <span className="text-white font-semibold">{sat?.t0_spill?.perimeter_km || 31.4} km</span></div>
-                    <div>Length: <span className="text-white font-semibold">{sat?.t0_spill?.length_km || 9.2} km</span></div>
-                    <div>Width: <span className="text-white font-semibold">{sat?.t0_spill?.width_km || 3.1} km</span></div>
+                ) : (
+                  <div className="p-3.5 rounded-xl bg-[#0a1428] border border-[#162a52] space-y-2">
+                    <div className="flex items-center justify-between font-semibold text-slate-200">
+                      <span className="text-sky-300">1. Sentinel-1 SAR Acquisition (T0)</span>
+                      <span className="text-[10px] text-emerald-400 font-mono">CONF: {sat?.t0_spill?.confidence ? (sat.t0_spill.confidence * 100).toFixed(1) + "%" : "94.8%"}</span>
+                    </div>
+                    <p className="text-slate-300 text-[11px] leading-relaxed">
+                      {sat?.t0_spill?.source || "Copernicus Sentinel-1A SAR IW GRD"} acquired at T0. U-Net segmentation delineated anomalous low-backscatter oil film.
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 text-[10px] font-mono bg-[#0d1a33] p-2 rounded border border-[#172c54]">
+                      <div>Area: <span className="text-white font-semibold">{sat?.t0_spill?.area_km2 || 22.6} km²</span></div>
+                      <div>Perimeter: <span className="text-white font-semibold">{sat?.t0_spill?.perimeter_km || 31.4} km</span></div>
+                      <div>Length: <span className="text-white font-semibold">{sat?.t0_spill?.length_km || 9.2} km</span></div>
+                      <div>Width: <span className="text-white font-semibold">{sat?.t0_spill?.width_km || 3.1} km</span></div>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* 2. Predicted Spill Origin Point (Hindcast Backtracking) */}
                 <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#121026] to-[#0a1428] border border-red-500/40 space-y-2.5 shadow-lg shadow-red-950/20">

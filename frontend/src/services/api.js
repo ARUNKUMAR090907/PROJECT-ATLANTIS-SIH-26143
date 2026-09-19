@@ -65,6 +65,31 @@ export async function getIncident(incidentId) {
   return data;
 }
 
+export async function getIncidentSatellite(incidentId) {
+  const { data } = await client.get(`/incidents/${incidentId}/satellite`);
+  return data;
+}
+
+export async function getIncidentAIS(incidentId) {
+  const { data } = await client.get(`/incidents/${incidentId}/ais`);
+  return data;
+}
+
+export async function getIncidentEnvironment(incidentId) {
+  const { data } = await client.get(`/incidents/${incidentId}/environment`);
+  return data;
+}
+
+export async function getIncidentTimeline(incidentId) {
+  const { data } = await client.get(`/incidents/${incidentId}/timeline`);
+  return data;
+}
+
+export async function getIncidentEvidence(incidentId) {
+  const { data } = await client.get(`/incidents/${incidentId}/evidence`);
+  return data;
+}
+
 export async function createIncident(incident) {
   const { data } = await client.post("/incidents", incident);
   return data;
